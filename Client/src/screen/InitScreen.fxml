@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="559.0" prefWidth="803.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screen.InitScreen">
+   <children>
+      <ImageView layoutX="210.0" layoutY="226.0">
+         <image>
+            <Image url="@../../../../../AppData/Local/Temp/icons8_User_32px_1.png" />
+         </image>
+      </ImageView>
+      <Button contentDisplay="RIGHT" layoutX="298.0" layoutY="338.0" mnemonicParsing="false" onAction="#startMenu" prefHeight="55.0" prefWidth="196.0" text="Login">
+         <graphic>
+            <ImageView>
+               <image>
+                  <Image url="@../../../../../AppData/Local/Temp/icons8_Hand_Cursor_32px_1.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Alien Encounters" size="19.0" />
+         </font>
+      </Button>
+      <Label layoutX="11.0" layoutY="86.0" text="Batalha Naval">
+         <font>
+            <Font name="Ethnocentric" size="60.0" />
+         </font>
+      </Label>
+      <TextField layoutX="261.0" layoutY="221.0" prefHeight="41.0" prefWidth="331.0" promptText="YOUR NAME" />
+   </children>
+</AnchorPane>
