@@ -1,4 +1,4 @@
-package manager;
+package br.com.ifsp.batalhanaval.manager;
 
 public class ScreenManager {
 

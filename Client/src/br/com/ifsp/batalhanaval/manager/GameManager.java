@@ -1,4 +1,4 @@
-package manager;
+package br.com.ifsp.batalhanaval.manager;
 
 import javafx.application.Application;
 import javafx.scene.Group;

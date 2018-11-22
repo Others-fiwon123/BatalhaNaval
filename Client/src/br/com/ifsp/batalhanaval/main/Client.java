@@ -1,13 +1,13 @@
-package main;
+package br.com.ifsp.batalhanaval.main;
 
+import br.com.ifsp.batalhanaval.manager.GameManager;
+import br.com.ifsp.batalhanaval.manager.ScreenManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import manager.GameManager;
-import manager.ScreenManager;
 
 public class Client extends Application{
 	
