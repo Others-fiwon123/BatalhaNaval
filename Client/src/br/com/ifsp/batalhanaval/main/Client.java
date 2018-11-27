@@ -16,25 +16,11 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sun.applet.Main;
 
 public class Client extends Application{
 	
 	public static void  main(String args[]) throws UnknownHostException, IOException {
-		
-		// Teste de comunicao com o server
-		int numero, temp;
-		Scanner entrada = new Scanner(System.in);
-		Socket socket = new Socket("localhost", 7777);
-		
-		Scanner scanner = new Scanner(socket.getInputStream());
-		System.out.println("Entre com um valor: ");
-		numero = entrada.nextInt();
-		
-		PrintStream p = new PrintStream(socket.getOutputStream());
-		p.println(numero);
-		
-		temp = scanner.nextInt();
-		System.out.println(temp);
 		
 		launch(args);
 	}
@@ -42,9 +28,13 @@ public class Client extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
-		Parent root = FXMLLoader.load(getClass().getResource(ScreenManager.LOGIN));
-		Scene scene = new Scene(root);
-		primaryStage.setScene(scene);
-		primaryStage.show();
+		try {
+			Parent root = FXMLLoader.load(Main.class.getResource("screen/Menu.fxml"));
+			Scene scene = new Scene(root);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
