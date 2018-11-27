@@ -2,11 +2,11 @@ package br.com.ifsp.batalhanaval.gameobjects;
 
 public class Board {
 
-	private Ship[][] matrix;
+	private Tile[][] matrix;
 	
 	public Board(int i, int j) {
 		
-		matrix = new Ship[i][j];
+		matrix = new Tile[i][j];
 		
 	}
 	

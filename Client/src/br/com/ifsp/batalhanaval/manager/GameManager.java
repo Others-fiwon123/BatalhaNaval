@@ -6,21 +6,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class GameManager extends Application{
+public class GameManager{
 	
 	enum STATES { MENU,
-				  PLAYING, WIN, LOSE, DRAW }
-
-	@Override
-	public void start(Stage stage) throws Exception {
-		// TODO Auto-generated method stub
-		/*
-		Group root = new Group();
-		Scene scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
-		*/
+				  PLAYING, WIN, LOSE, DRAW, 
+				  YOURTURN, ENEMYTURN}
+	
+	STATES state;
+	
+	public GameManager() {
+		state = STATES.PLAYING;
 	}
-	
-	
 }

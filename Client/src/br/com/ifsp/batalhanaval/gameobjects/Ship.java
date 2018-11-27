@@ -1,10 +1,7 @@
 package br.com.ifsp.batalhanaval.gameobjects;
 
-public class Ship {
+public abstract class Ship {
 
 	protected int size;
 	
-	public Ship() {
-		
-	}
 }

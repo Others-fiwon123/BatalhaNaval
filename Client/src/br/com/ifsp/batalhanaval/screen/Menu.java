@@ -19,7 +19,7 @@ public class Menu {
 	
 	@FXML public void startGameBoard(ActionEvent event) throws IOException {
 		// Teste de comunicao com o server
-		int numero, temp;
+		/*int numero, temp;
 		Scanner entrada = new Scanner(System.in);
 		Socket socket = new Socket("localhost", 7777);
 		
@@ -31,7 +31,7 @@ public class Menu {
 		p.println(numero);
 		
 		temp = scanner.nextInt();
-		System.out.println(temp);
+		System.out.println(temp);*/
 		
 		
 		Parent parent = FXMLLoader.load(getClass().getResource(ScreenManager.GAME));
