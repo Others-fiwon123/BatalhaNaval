@@ -21,15 +21,17 @@ import sun.applet.Main;
 public class Client extends Application{
 	
 	public static void  main(String args[]) throws UnknownHostException, IOException {
-		
+	
 		launch(args);
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
+		System.out.println(getClass().getResource("../screen/Menu.fxml").getPath());		
 		// TODO Auto-generated method stub
 		try {
-			Parent root = FXMLLoader.load(Main.class.getResource("screen/Menu.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource(ScreenManager.LOGIN));
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
 			primaryStage.show();

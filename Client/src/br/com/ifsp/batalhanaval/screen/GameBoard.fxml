@@ -2,8 +2,7 @@
 
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="532.0" prefWidth="767.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1">
+<AnchorPane prefHeight="532.0" prefWidth="767.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ifsp.batalhanaval.screen.GameBoard">
    <children>
       <AnchorPane prefHeight="556.0" prefWidth="290.0" />
       <AnchorPane layoutX="284.0" prefHeight="556.0" prefWidth="495.0">
