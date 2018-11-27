@@ -1,4 +1,4 @@
-package br.ifsp.batalhanaval.main;
+package br.com.ifsp.batalhanaval.main;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,6 +10,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
+
+import br.ifsp.edu.batalhanaval.thread.ServerThread;
 
 public class GameServer {
 
@@ -39,7 +41,7 @@ public class GameServer {
 				p.println(temp);
 				//////////////////////////////////////////////////////////
 				
-				ServerThread thread = new ServerThread(socket);
+				Thread thread = new Thread(new ServerThread( socket ));
 				thread.start();
 				
 			}
@@ -47,29 +49,6 @@ public class GameServer {
 		} catch (IOException e) {
 			// tratar
 		}
-	}
-	
-	static class ServerThread extends Thread{
-
-		Socket socket = null;
-		BufferedReader reader = null;
-		PrintWriter pWriter = null;
-		
-		public ServerThread( Socket socket ) {
-			this.socket = socket;
-		}
-				
-				
-		public void run() {
-			try {
-				reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				pWriter = new PrintWriter(socket.getOutputStream());
-				
-			} catch (Exception e) {
-				System.out.println("Exceção I/O lançada na thread do servidor");
-			}
-		}
-
 	}
 }
  
