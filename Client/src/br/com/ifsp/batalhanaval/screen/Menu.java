@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 
+import br.com.ifsp.batalhanaval.manager.GameManager;
 import br.com.ifsp.batalhanaval.manager.ScreenManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,11 +34,14 @@ public class Menu {
 		temp = scanner.nextInt();
 		System.out.println(temp);*/
 		
-		
-		Parent parent = FXMLLoader.load(getClass().getResource(ScreenManager.GAME));
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource(ScreenManager.GAME));
+		Parent parent = loader.load();
 		Scene scene = new Scene(parent);
 		Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
 		stage.setScene(scene);
 		stage.show();
+		
+		GameManager.getInstance().setGameController(loader.getController());
 	}
 }

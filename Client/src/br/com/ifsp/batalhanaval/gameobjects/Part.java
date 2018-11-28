@@ -14,9 +14,13 @@ public class Part{
 	boolean isDestruct = false;
 	
 	
-	/*public Part(int idShip) {
+	public Part(int idShip) {
 		this.idShip = idShip;
-	}*/
+	}
+	
+	public boolean isPartDestruct() {
+		return isDestruct;
+	}
 	
 
 	

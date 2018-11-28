@@ -12,4 +12,8 @@ public class Player {
 		ships[3] = new Submarino();
 	}
 	
+	public Ship[] getShips() {
+		return ships;
+	}
+	
 }

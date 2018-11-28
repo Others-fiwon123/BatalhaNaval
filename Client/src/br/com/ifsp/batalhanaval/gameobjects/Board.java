@@ -4,10 +4,11 @@ public class Board {
 
 	private Tile[][] matrix;
 	
-	public Board(int i, int j) {
-		
-		matrix = new Tile[i][j];
-		
+	public Board(int x, int y) {
+		matrix = new Tile[x][y];
 	}
 	
+	public Tile[][] getMatrix() {
+		return matrix;
+	}
 }

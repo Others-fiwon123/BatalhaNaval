@@ -1,5 +1,7 @@
 package br.com.ifsp.batalhanaval.gameobjects;
 
+import br.com.ifsp.batalhanaval.manager.GameManager;
+import br.com.ifsp.batalhanaval.screen.GameBoard;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.InputEvent;
@@ -15,19 +17,17 @@ public class Tile{
 		this.part = part;
 		
 		view = new Rectangle(30, 30, Color.ALICEBLUE);
-		EventHandler<InputEvent> handler = new EventHandler<InputEvent>() {
-		    public void handle(InputEvent event) {
-		        ((Rectangle)view).setFill(Color.BLACK);
-		        
-		        if(part != null) {
-		        	((Rectangle)view).setFill(Color.GREEN);
-		        }
-		    }
-		};
-		view.setOnMouseClicked(handler);
+	}
+	
+	public void setPart(Part part) {
+		this.part = part;
 	}
 	
 	public Node getView() {
 		return view;
+	}
+	
+	public Part getPart() {
+		return part;
 	}
 }
