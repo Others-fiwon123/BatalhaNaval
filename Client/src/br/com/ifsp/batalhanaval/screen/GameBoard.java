@@ -68,7 +68,7 @@ public class GameBoard
 			try {
 				if(gridPlayer.getRowIndex(child) == i &&
 				   gridPlayer.getColumnIndex(child) == j ) {
-					((Rectangle)child).setFill(Color.BLACK);
+					((Rectangle)child).setFill(Color.AQUA);
 				}
 			}catch(Exception e) {
 				
@@ -130,32 +130,32 @@ public class GameBoard
     public void initialize() throws IOException {
 	   Board board = new Board(10, 10);
 	   
-	   gridPlayer.setPrefHeight(30);
-	   gridPlayer.setPrefWidth(30);
+	  // gridPlayer.setPrefHeight(30);
+	  // gridPlayer.setPrefWidth(30);
 	   
 	   for(int i = 0; i < 10; i++) {
 		   for(int j = 0; j < 10; j++) {
 			   Tile tilePlayer = new Tile(null);
-			   Tile tile = new Tile(null);
+			   Tile tileEnemy = new Tile(null);
 
-			   gridPlayer.add(tilePlayer.getView(), i, j, 1, 1);
-			   gridEnemy.add(tile.getView(),i, j, 1, 1);
+			   gridPlayer.add(tilePlayer, i, j, 1, 1);
+			   gridEnemy.add(tileEnemy,i, j, 1, 1);
 			   
-			   EventHandler<InputEvent> handler = new EventHandler<InputEvent>() {
+			   EventHandler<InputEvent> handlerTileEnemy = new EventHandler<InputEvent>() {
 				    public void handle(InputEvent event) {
-				       ((Rectangle)tile.getView()).setFill(Color.AQUA);
+				    	tileEnemy.setFill(Color.AQUA);
 				       
-				       int i = gridPlayer.getRowIndex(tile.getView());
-				       int j = gridPlayer.getColumnIndex(tile.getView());
+				       int i = gridPlayer.getRowIndex(tileEnemy);
+				       int j = gridPlayer.getColumnIndex(tileEnemy);
 				       try {
 						GameManager.getInstance().sendMessage(i, j);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 				       
-				       if(tile.getPart() != null) {
-				    	   ((Rectangle)tile.getView()).setFill(Color.RED);
+				       if(tileEnemy.getPart() != null) {
+				    	   tileEnemy.setFill(Color.RED);
 				       }
 				    }
 				};
@@ -180,28 +180,35 @@ public class GameBoard
 				  
 				  EventHandler<InputEvent> handlerClicked = new EventHandler<InputEvent>() {
 					    public void handle(InputEvent event) {
+					
 					    	
 					    	if(hold != null) {
-						    	int i = gridPlayer.getRowIndex(tilePlayer.getView());
-								int j = gridPlayer.getColumnIndex(tilePlayer.getView());
+						    	int i = gridPlayer.getRowIndex(tilePlayer);
+								int j = gridPlayer.getColumnIndex(tilePlayer);
 								    
-								hold.setVisible(false);
+						    	int lastPosition = (j+holdSize-1)*10+i+1;
 								
-						       ((Rectangle)tilePlayer.getView()).setFill(Color.GREENYELLOW);
-						    	for(int offset = 1; offset < holdSize ; offset++) {
-						    		Rectangle r = (Rectangle)gridPlayer.getChildren().get((j+offset)*10+i+1);
-						    		r.setFill(Color.GREENYELLOW);
+						    	//Verifica se pode por o navio na possição
+						    	if(lastPosition <= 100) {
+									hold.setVisible(false);
+									
+									tilePlayer.setFill(Color.GREENYELLOW);
+							    	for(int offset = 1; offset < holdSize ; offset++) {
+							    		Rectangle r = (Rectangle)gridPlayer.getChildren().get((j+offset)*10+i+1);
+							    		r.setFill(Color.GREENYELLOW);
+							    	}
+							    	
+							    	hold = null;
 						    	}
-						    	
-						    	hold = null;
 					    	}
+					    	
 					    }
 					};
 			
-				tile.getView().setOnMouseClicked(handler);
+				tileEnemy.setOnMouseClicked(handlerTileEnemy);
 				
-				tilePlayer.getView().setOnMouseEntered(handlerEntered);
-				tilePlayer.getView().setOnMouseClicked(handlerClicked);
+				tilePlayer.setOnMouseEntered(handlerEntered);
+				tilePlayer.setOnMouseClicked(handlerClicked);
 		   }
 	   }
 	   

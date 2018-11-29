@@ -7,14 +7,6 @@ import br.com.ifsp.batalhanaval.gameobjects.Part;
 import br.com.ifsp.batalhanaval.gameobjects.Player;
 import br.com.ifsp.batalhanaval.gameobjects.Ship;
 import br.com.ifsp.batalhanaval.screen.GameBoard;
-import javafx.application.Application;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.stage.Stage;
 
 public class GameManager{
 	
@@ -53,7 +45,7 @@ public class GameManager{
 		return instance;
 	}
 	
-	public void sendMessage(int i , int j) {
+	public void sendMessage(int i ,int j) {
 		game.hit(i, j);
 	}
 	
