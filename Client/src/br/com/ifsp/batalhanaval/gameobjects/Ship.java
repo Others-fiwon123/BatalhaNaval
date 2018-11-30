@@ -1,10 +1,12 @@
 package br.com.ifsp.batalhanaval.gameobjects;
 
-public class Ship {
+public abstract class Ship {
 
+	int id;
 	protected int size;
+	Part[] parts;
 	
-	public Ship() {
-		
+	public Part[] getParts() {
+		return parts;
 	}
 }
