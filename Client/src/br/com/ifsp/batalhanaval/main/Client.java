@@ -1,3 +1,4 @@
+
 package br.com.ifsp.batalhanaval.main;
 
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class Client extends Application{
 		temp = scanner.nextInt();
 		System.out.println(temp);
 		
-		launch(args);
+		//launch(args);
 	}
 
 	@Override
