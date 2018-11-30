@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 
+import br.com.ifsp.batalhanaval.manager.GameHandle;
 import br.com.ifsp.batalhanaval.manager.GameManager;
 import br.com.ifsp.batalhanaval.manager.ScreenManager;
 import javafx.event.ActionEvent;
@@ -19,29 +20,16 @@ public class Menu {
 
 	
 	@FXML public void startGameBoard(ActionEvent event) throws IOException {
-		// Teste de comunicao com o server
-		/*int numero, temp;
-		Scanner entrada = new Scanner(System.in);
-		Socket socket = new Socket("localhost", 7777);
-		
-		Scanner scanner = new Scanner(socket.getInputStream());
-		System.out.println("Entre com um valor: ");
-		numero = entrada.nextInt();
-		
-		PrintStream p = new PrintStream(socket.getOutputStream());
-		p.println(numero);
-		
-		temp = scanner.nextInt();
-		System.out.println(temp);*/
-		
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource(ScreenManager.GAME));
 		Parent parent = loader.load();
 		Scene scene = new Scene(parent);
 		Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
 		stage.setScene(scene);
-		stage.show();
-		
 		GameManager.getInstance().setGameController(loader.getController());
+		
+		//Inicia comunicação com o servidor
+		Thread t = new Thread(new GameHandle(stage));
+		t.start();
 	}
 }

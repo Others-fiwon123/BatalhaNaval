@@ -10,7 +10,8 @@ public class GameServer {
 	
 	public static void main(String[] args) throws IOException {
 		try {
-			servidor.iniciaServidor();	
+			servidor = new GameServer();
+			servidor.iniciaServidor();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

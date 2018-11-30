@@ -20,6 +20,12 @@ public class ClientHandler extends Thread{
 	BufferedReader reader;
     Socket sock;
     PrintWriter client;
+    
+    //Felipe
+    Socket playerSocket;
+    Socket enemySoket;
+    PrintWriter sendPlayer;
+    BufferedReader hearEnemy;
 
     public ClientHandler(Socket clientSocket, PrintWriter user) 
     {
@@ -36,6 +42,19 @@ public class ClientHandler extends Thread{
          }
 
     }
+    
+    public ClientHandler(Socket playerSocket, Socket enemySocket) throws IOException 
+    {
+         this.playerSocket = playerSocket;
+         this.enemySoket = enemySocket;
+         
+         InputStreamReader isReader = new InputStreamReader(enemySoket.getInputStream());
+         hearEnemy = new BufferedReader(isReader);
+         
+         sendPlayer = new PrintWriter(playerSocket.getOutputStream());
+
+
+    }
 
     @Override
     public void run() 
@@ -45,7 +64,15 @@ public class ClientHandler extends Thread{
 
          try 
          {
-             while ((message = reader.readLine()) != null) 
+        	 while ((message = hearEnemy.readLine()) != null) {
+        		 
+        		 data = message.split(":");
+        		 if(data[0].equals(connect)) {
+        			 sendPlayer.println(connect);
+        		 }
+        	 }
+        	 
+             /*while ((message = reader.readLine()) != null) 
              {
                  
                  data = message.split(":");
@@ -73,7 +100,7 @@ public class ClientHandler extends Thread{
                  {
                      //ta_chat.append("No Conditions were met. \n");
                  }
-             } 
+             } */
           } 
           catch (Exception ex) 
           {

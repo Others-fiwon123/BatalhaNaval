@@ -24,7 +24,6 @@ public class ServerThread implements Runnable{
     {
         //clientOutputStreams = new ArrayList();
         users = new ArrayList();
-
         try 
         {
         	serverSock = new ServerSocket(7777);
@@ -32,10 +31,17 @@ public class ServerThread implements Runnable{
             while (true) 
             {
             	Socket clientSock = serverSock.accept();
-            	PrintWriter writer = new PrintWriter(clientSock.getOutputStream());
+            	//PrintWriter writer = new PrintWriter(clientSock.getOutputStream());
+            	//clientOutputStreams.add(writer);
+            	
+            	Socket clientSock2 = serverSock.accept();
+            	//PrintWriter writer2 = new PrintWriter(clientSock.getOutputStream());
             	//clientOutputStreams.add(writer);
 
-            	Thread listener = new Thread(new ClientHandler(clientSock, writer));
+            	//Thread listener = new Thread(new ClientHandler(clientSock, writer));
+            	Thread listener = new Thread(new ClientHandler(clientSock, clientSock2));
+            	Thread listener2 = new Thread(new ClientHandler(clientSock2, clientSock));
+            	
             	listener.start();
             	//ta_chat.append("Got a connection. \n");
             }
