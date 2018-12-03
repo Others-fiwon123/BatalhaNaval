@@ -43,6 +43,7 @@ public class ServerThread implements Runnable{
             	Thread listener2 = new Thread(new ClientHandler(clientSock2, clientSock));
             	
             	listener.start();
+            	listener2.start();
             	//ta_chat.append("Got a connection. \n");
             }
         } catch (SocketException e) {

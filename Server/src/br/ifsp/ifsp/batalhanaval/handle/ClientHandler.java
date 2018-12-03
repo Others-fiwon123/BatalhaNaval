@@ -51,7 +51,7 @@ public class ClientHandler extends Thread{
          InputStreamReader isReader = new InputStreamReader(enemySoket.getInputStream());
          hearEnemy = new BufferedReader(isReader);
          
-         sendPlayer = new PrintWriter(playerSocket.getOutputStream());
+         sendPlayer = new PrintWriter(playerSocket.getOutputStream(), true);
 
 
     }
@@ -66,9 +66,14 @@ public class ClientHandler extends Thread{
          {
         	 while ((message = hearEnemy.readLine()) != null) {
         		 
+        		 System.out.println("RECEBI SERVER");
         		 data = message.split(":");
         		 if(data[0].equals(connect)) {
         			 sendPlayer.println(connect);
+        		 }else if(data[0].equals("Hit")) {
+        			 sendPlayer.println(message);
+        		 }else if(data[0].equals("Ready")) {
+        			 sendPlayer.println(message);
         		 }
         	 }
         	 

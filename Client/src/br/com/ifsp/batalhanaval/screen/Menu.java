@@ -29,7 +29,9 @@ public class Menu {
 		GameManager.getInstance().setGameController(loader.getController());
 		
 		//Inicia comunicação com o servidor
-		Thread t = new Thread(new GameHandle(stage));
+		Socket socket = new Socket("localhost", 7777);
+		GameManager.getInstance().setSocket(socket);
+		Thread t = new Thread(new GameHandle(stage, socket));
 		t.start();
 	}
 }

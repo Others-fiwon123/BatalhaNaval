@@ -50,7 +50,7 @@
                   <Image url="@../img/cruzador.png" />
                </image>
             </ImageView>
-            <Button fx:id="btnReady" layoutX="19.0" layoutY="493.0" mnemonicParsing="false" text="Ready!!" />
+            <Button fx:id="btnReady" layoutX="19.0" layoutY="493.0" mnemonicParsing="false" onMouseClicked="#OnClickReady" text="Ready!!" />
          </children></Pane>
       <Pane fx:id="paneEnemy" layoutX="382.0" prefHeight="532.0" prefWidth="387.0">
          <children>

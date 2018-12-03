@@ -48,9 +48,11 @@ public class GameBoard
 	
 	ImageView hold;
 	int holdSize;
+	int holdIdShip;
 	
-	public void  OnClickReady() {
-		
+	public void  OnClickReady(MouseEvent evt) throws IOException {
+		GameManager.getInstance().readyGame();
+		System.out.println("enviado menssagem Ready");
 	}
 	
 	@FXML
@@ -84,53 +86,25 @@ public class GameBoard
 		ImageView typeShip = (ImageView)evt.getSource();
 		if(typeShip == viewPortaAviao) {
 			holdSize = 5;
+			holdIdShip = 1;
 		}else if(typeShip == viewEncouracado) {
 			holdSize = 4;
+			holdIdShip = 2;
 		}else if(typeShip == viewCruzador) {
 			holdSize = 3;
+			holdIdShip = 3;
 		}else if(typeShip == viewSubmarino) {
 			holdSize = 2;
+			holdIdShip = 4;
 		}
 		
 		hold = (ImageView)evt.getSource();
 		hold.setOpacity(1);
 	}
 	
-	/*@FXML
-	public void OnMousePressed(MouseEvent evt) {
-		
-	       orgSceneX = evt.getSceneX();
-           orgSceneY = evt.getSceneY();
-           orgTranslateX = ((Node)(evt.getSource())).getTranslateX();
-           orgTranslateY = ((Node)(evt.getSource())).getTranslateY();
-	}
-	
-	@FXML
-	public void OnMouseDragged(MouseEvent evt) {
-		
-        double offsetX = evt.getSceneX() - orgSceneX;
-        double offsetY = evt.getSceneY() - orgSceneY;
-        double newTranslateX = orgTranslateX + offsetX;
-        double newTranslateY = orgTranslateY + offsetY;
-         
-        ((Node)(evt.getSource())).setTranslateX(newTranslateX);
-        ((Node)(evt.getSource())).setTranslateY(newTranslateY);
-	}
-
-	@FXML
-	public void OnMouseReleased(MouseEvent evt) {
-		
-        node.setFill(Color.RED);
-	}*/
-	
-	
-	
 	@FXML
     public void initialize() throws IOException {
 	   Board board = new Board(10, 10);
-	   
-	  // gridPlayer.setPrefHeight(30);
-	  // gridPlayer.setPrefWidth(30);
 	   
 	   for(int i = 0; i < 10; i++) {
 		   for(int j = 0; j < 10; j++) {
@@ -190,6 +164,13 @@ public class GameBoard
 						    	//Verifica se pode por o navio na possição
 						    	if(lastPosition <= 100) {
 									hold.setVisible(false);
+									
+									try {
+										GameManager.getInstance().setConfigurationShip(holdIdShip, true, i, j);
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
 									
 									tilePlayer.setFill(Color.GREENYELLOW);
 							    	for(int offset = 1; offset < holdSize ; offset++) {
