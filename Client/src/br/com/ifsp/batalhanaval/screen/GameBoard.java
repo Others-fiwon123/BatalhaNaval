@@ -2,6 +2,8 @@ package br.com.ifsp.batalhanaval.screen;
 
 import java.io.IOException;
 import br.com.ifsp.batalhanaval.gameobjects.Board;
+import br.com.ifsp.batalhanaval.gameobjects.Player;
+import br.com.ifsp.batalhanaval.gameobjects.Ship;
 import br.com.ifsp.batalhanaval.gameobjects.Tile;
 import br.com.ifsp.batalhanaval.manager.GameManager;
 import br.com.ifsp.batalhanaval.manager.ScreenManager;
@@ -12,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
@@ -19,11 +22,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class GameBoard
 {
+	@FXML
+	public Circle circlePlayer,
+		   circleEnemy;
 	
 	@FXML 
 	public Pane panePlayer;
@@ -42,6 +49,9 @@ public class GameBoard
 	
 	@FXML 
 	public GridPane gridPlayer, gridEnemy; 
+	
+	@FXML
+	Button btnReady;
 	
 	double orgSceneX, orgSceneY;
 	double orgTranslateX, orgTranslateY;
@@ -65,16 +75,16 @@ public class GameBoard
 	}
 
 	public void hit(int i, int j) {
-		for(Node child : gridPlayer.getChildren()) {
 			try {
-				if(gridPlayer.getRowIndex(child) == i &&
-				   gridPlayer.getColumnIndex(child) == j ) {
-					((Rectangle)child).setFill(Color.AQUA);
-				}
+					Tile t = (Tile)gridPlayer.getChildren().get(j*10+i+1);
+					if(t.getPart() == null)
+						t.setFill(Color.AQUA);
+					else
+						t.setFill(Color.RED);
 			}catch(Exception e) {
 				
 			}
-		}
+		
 	}
 	
 	public void OnMouseClick(MouseEvent evt) {
@@ -102,6 +112,16 @@ public class GameBoard
 		hold.setOpacity(1);
 	}
 	
+	public void verifyReady() {
+		if(!viewPortaAviao.isVisible() &&
+			!viewEncouracado.isVisible() &&
+			!viewCruzador.isVisible() &&
+			!viewSubmarino.isVisible()) {
+			
+			btnReady.setDisable(false);
+		}
+	}
+	
 	@FXML
     public void initialize() throws IOException {
 	   Board board = new Board(10, 10);
@@ -116,20 +136,31 @@ public class GameBoard
 			   
 			   EventHandler<InputEvent> handlerTileEnemy = new EventHandler<InputEvent>() {
 				    public void handle(InputEvent event) {
-				    	tileEnemy.setFill(Color.AQUA);
-				       
-				       int i = gridPlayer.getRowIndex(tileEnemy);
-				       int j = gridPlayer.getColumnIndex(tileEnemy);
-				       try {
-						GameManager.getInstance().sendMessage(i, j);
+				    	
+				    	try {
+							if(GameManager.getInstance().getState() == GameManager.STATES.YOURTURN) {
+								if(!tileEnemy.getOpen()) {
+								   tileEnemy.setFill(Color.AQUA);
+								   
+								   int i = gridPlayer.getRowIndex(tileEnemy);
+								   int j = gridPlayer.getColumnIndex(tileEnemy);
+								   try {
+									GameManager.getInstance().passTurn(i, j);
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								   
+								   if(tileEnemy.getPart() != null) {
+									   tileEnemy.setFill(Color.RED);
+								   }
+								   tileEnemy.setOpen(true);
+								}
+							}
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-				       
-				       if(tileEnemy.getPart() != null) {
-				    	   tileEnemy.setFill(Color.RED);
-				       }
 				    }
 				};
 				
@@ -171,12 +202,22 @@ public class GameBoard
 										// TODO Auto-generated catch block
 										e.printStackTrace();
 									}
-									
-									tilePlayer.setFill(Color.GREENYELLOW);
-							    	for(int offset = 1; offset < holdSize ; offset++) {
-							    		Rectangle r = (Rectangle)gridPlayer.getChildren().get((j+offset)*10+i+1);
-							    		r.setFill(Color.GREENYELLOW);
+		
+							    	for(int offset = 0; offset < holdSize ; offset++) {
+							    		Player player;
+							    		Tile t = (Tile)gridPlayer.getChildren().get((j+offset)*10+i+1);
+							    		t.setFill(Color.GREENYELLOW);
+										try {
+											player = GameManager.getInstance().getPlayer();
+											Ship ship = player.getShips()[holdIdShip-1];
+											t.setPart(ship.getParts()[offset]);
+										} catch (IOException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
 							    	}
+							    	
+							    	verifyReady();
 							    	
 							    	hold = null;
 						    	}

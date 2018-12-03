@@ -59,7 +59,7 @@ public class ClientHandler extends Thread{
     @Override
     public void run() 
     {
-         String message, connect = "Connect", disconnect = "Disconnect", chat = "Chat" ;
+         String message, connect = "Connect", disconnect = "Disconnect", yourTurn = "YourTurn" ;
          String[] data;
 
          try 
@@ -73,6 +73,8 @@ public class ClientHandler extends Thread{
         		 }else if(data[0].equals("Hit")) {
         			 sendPlayer.println(message);
         		 }else if(data[0].equals("Ready")) {
+        			 sendPlayer.println(message);
+        		 }else if(data[0].equals(yourTurn)) {
         			 sendPlayer.println(message);
         		 }
         	 }

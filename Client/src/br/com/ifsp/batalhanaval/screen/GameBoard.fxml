@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Circle?>
 
 <AnchorPane prefHeight="532.0" prefWidth="767.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ifsp.batalhanaval.screen.GameBoard">
    <children>
@@ -24,8 +25,12 @@
                </padding>
                <columnConstraints>
                   <ColumnConstraints />
+                  <ColumnConstraints />
+                  <ColumnConstraints />
                </columnConstraints>
                <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
                   <RowConstraints />
                </rowConstraints>
             </GridPane>
@@ -50,7 +55,8 @@
                   <Image url="@../img/cruzador.png" />
                </image>
             </ImageView>
-            <Button fx:id="btnReady" layoutX="19.0" layoutY="493.0" mnemonicParsing="false" onMouseClicked="#OnClickReady" text="Ready!!" />
+            <Button fx:id="btnReady" disable="true" layoutX="19.0" layoutY="493.0" mnemonicParsing="false" onMouseClicked="#OnClickReady" text="Ready!!" />
+            <Circle fx:id="circlePlayer" fill="#d0d0d0" layoutX="49.0" layoutY="9.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
          </children></Pane>
       <Pane fx:id="paneEnemy" layoutX="382.0" prefHeight="532.0" prefWidth="387.0">
          <children>
@@ -64,6 +70,7 @@
             <Label fx:id="lbEncouracado" layoutX="43.0" layoutY="433.0" text="Encouraçado: 4" />
             <Label fx:id="lbCruzador" layoutX="43.0" layoutY="464.0" text="Cruzador: 3" />
             <Label fx:id="lbSubmarino" layoutX="43.0" layoutY="492.0" text="Submarino: 0" />
+            <Circle fx:id="circleEnemy" fill="#d0d0d0" layoutX="52.0" layoutY="9.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
          </children></Pane>
    </children>
 </AnchorPane>

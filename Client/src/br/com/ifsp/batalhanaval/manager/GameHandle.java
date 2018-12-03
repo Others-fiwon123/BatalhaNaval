@@ -38,7 +38,7 @@ public class GameHandle implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		Scanner entrada = new Scanner(System.in);
-		String message, connect = "Connect", disconnect = "Disconnect", chat = "Chat", hit = "Hit", ready = "Ready" ;
+		String message, connect = "Connect", disconnect = "Disconnect", hit = "Hit", ready = "Ready", yourTurn = "YourTurn" ;
 		String[] data;
 		
 		 try 
@@ -53,6 +53,7 @@ public class GameHandle implements Runnable{
 					 int i = Integer.valueOf(data[1]);
 					 int j = Integer.valueOf(data[2]);
 					 GameManager.getInstance().hit(i, j);
+					 GameManager.getInstance().changeState(GameManager.STATES.YOURTURN);
 				 }else if(data[0].equals(ready)){
 					 Player enemy = GameManager.getInstance().getEnemy();
 					 for(int i = 1; i < data.length; i++) {
@@ -68,6 +69,12 @@ public class GameHandle implements Runnable{
 						
 					 }
 					 GameManager.getInstance().configureBoardEnemy();
+				 }else if(data[0].equals(yourTurn)) {
+					 System.out.println("YourTurn: "+Boolean.valueOf(data[1]));
+					 if(Boolean.valueOf(data[1]))
+					 	GameManager.getInstance().changeState(GameManager.STATES.YOURTURN);
+					 else
+						GameManager.getInstance().changeState(GameManager.STATES.ENEMYTURN);
 				 }
 			 }
 			 

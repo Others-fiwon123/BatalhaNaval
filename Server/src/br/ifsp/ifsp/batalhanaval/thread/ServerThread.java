@@ -9,6 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 import br.ifsp.ifsp.batalhanaval.handle.ClientHandler;
@@ -31,11 +32,9 @@ public class ServerThread implements Runnable{
             while (true) 
             {
             	Socket clientSock = serverSock.accept();
-            	//PrintWriter writer = new PrintWriter(clientSock.getOutputStream());
             	//clientOutputStreams.add(writer);
             	
             	Socket clientSock2 = serverSock.accept();
-            	//PrintWriter writer2 = new PrintWriter(clientSock.getOutputStream());
             	//clientOutputStreams.add(writer);
 
             	//Thread listener = new Thread(new ClientHandler(clientSock, writer));
@@ -44,6 +43,19 @@ public class ServerThread implements Runnable{
             	
             	listener.start();
             	listener2.start();
+            	
+            	PrintWriter writer = new PrintWriter(clientSock.getOutputStream(), true);
+            	PrintWriter writer2 = new PrintWriter(clientSock2.getOutputStream(), true);
+            	
+            	int whoStart = new Random().nextInt(2);
+            	if(whoStart == 1) {
+            		writer.println("YourTurn:True");
+            		writer2.println("YourTurn:False");
+            	}else {
+            		writer.println("YourTurn:False");
+            		writer2.println("YourTurn:True");
+            	}
+
             	//ta_chat.append("Got a connection. \n");
             }
         } catch (SocketException e) {

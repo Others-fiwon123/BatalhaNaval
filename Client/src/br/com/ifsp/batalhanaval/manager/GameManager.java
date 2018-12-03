@@ -8,14 +8,15 @@ import br.com.ifsp.batalhanaval.gameobjects.Board;
 import br.com.ifsp.batalhanaval.gameobjects.Part;
 import br.com.ifsp.batalhanaval.gameobjects.Player;
 import br.com.ifsp.batalhanaval.gameobjects.Ship;
+import br.com.ifsp.batalhanaval.gameobjects.Tile;
 import br.com.ifsp.batalhanaval.screen.GameBoard;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class GameManager{
 	
-	enum STATES { ENDGAME,
-				  START, WIN, LOSE, DRAW, 
+	public enum STATES { ENDGAME,
+				  START, WIN, LOSE, 
 				  YOURTURN, ENEMYTURN}
 	
 	STATES state;
@@ -36,21 +37,30 @@ public class GameManager{
 	
 	}
 	
+	public STATES getState() {
+		return state;
+	}
+	
 	public void configureBoardEnemy() {
 		Ship[] ships = enemy.getShips();
 		
 		for(int i =  0; i < ships.length; i++) {
 	    	Ship ship = ships[i];
 			for(int offset = 0; offset < ship.getSize() ; offset++) {
-	    		Rectangle r = (Rectangle)game.gridEnemy.getChildren().get((ship.getFistPositionColumn()+offset)*10+
+	    		Tile t = (Tile)game.gridEnemy.getChildren().get((ship.getFistPositionColumn()+offset)*10+
 	    																	ship.getFistPositionRow()+1);
-	    		r.setFill(Color.GREENYELLOW);
+	    		t.setPart(ship.getParts()[offset]);
+	    		System.out.println("id:"+i);
 	    	}
 		}
 	}
 	
 	public Player getEnemy() {
 		return enemy;
+	}
+	
+	public Player getPlayer() {
+		return player;
 	}
 	
 	public void setSocket(Socket socket) {
@@ -111,7 +121,7 @@ public class GameManager{
 		return playerBoard;
 	}*/
 	
-	private void changeState(STATES newState) {
+	public void changeState(STATES newState) {
 		switch(newState) {
 			case ENDGAME:
 					//Send Signal wich game end (possible send (-1, -1))
@@ -124,11 +134,13 @@ public class GameManager{
 					break;
 			case LOSE:
 					break;
-			case DRAW:
-					break;
 			case YOURTURN:
+					game.circlePlayer.setFill(Color.RED);
+					game.circleEnemy.setFill(Color.GRAY);
 					break;
 			case ENEMYTURN:
+					game.circlePlayer.setFill(Color.GRAY);
+					game.circleEnemy.setFill(Color.RED);
 					break;
 		}
 		
@@ -137,7 +149,6 @@ public class GameManager{
 	
 	public void startGame() {
 		changeState(STATES.START);
-		changeState(STATES.YOURTURN);
 	}
 	
 	public boolean isGameEnd() {
@@ -156,13 +167,13 @@ public class GameManager{
 		return isEnd;
 	}
 	
-	public void passTurn(int x, int y) {
-		if(state == STATES.YOURTURN) {
-			//Send coordinate (x, y) of board and verify if gameEND
-			changeState(STATES.ENEMYTURN);
-		}else {
-			//Receive coordinate (x, y) of board and verify if gameEND
-			changeState(STATES.YOURTURN);
+	public void passTurn(int i, int j) {
+		changeState(STATES.ENEMYTURN);
+		try {
+			sendMessage(i, j);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
