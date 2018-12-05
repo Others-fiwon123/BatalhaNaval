@@ -1,9 +1,9 @@
-package br.com.ifsp.batalhanaval.gameobjects;
+package br.ifsp.batalhanaval.gameobjects;
 
 public class Player {
-	
+
 	Ship[] ships;
-	
+
 	public Player(int i, int j) {
 		ships = new Ship[4];
 		ships[0] = new PortaAviao();
@@ -11,9 +11,9 @@ public class Player {
 		ships[2] = new Cruzador();
 		ships[3] = new Submarino();
 	}
-	
+
 	public Ship[] getShips() {
 		return ships;
 	}
-	
+
 }

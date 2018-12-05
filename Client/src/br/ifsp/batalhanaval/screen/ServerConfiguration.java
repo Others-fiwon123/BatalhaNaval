@@ -1,9 +1,9 @@
-package br.com.ifsp.batalhanaval.screen;
+package br.ifsp.batalhanaval.screen;
 
 import java.io.IOException;
 
-import br.com.ifsp.batalhanaval.manager.ScreenManager;
-import br.com.ifsp.batalhanaval.manager.ServerManager;
+import br.ifsp.batalhanaval.manager.ScreenManager;
+import br.ifsp.batalhanaval.manager.ServerManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,31 +14,32 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class ServerConfiguration {
-	
+
 	@FXML
 	TextField tfIp, tfPort;
-	
-	
+
 	public void saveConfiguration(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader();
+		
+		ScreenManager.getInstance().setScreen(ScreenManager.INITSCREEN);
+		ScreenManager.getInstance().showScreen();
+		/*FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource(ScreenManager.INITSCREEN));
-		Parent parent;
+		Parent parent = null;
+
 		try {
 			parent = loader.load();
-			Scene scene = new Scene(parent);
-			Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-			stage.setScene(scene);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Exceção não possível carregar a tela inicial.");
 		}
-
 		
+		Scene scene = new Scene(parent);
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		stage.setScene(scene);
+		 */
 	}
-	
+
 	@FXML
-    public void initialize() {
-		System.out.println("OI");
+	public void initialize() {
 		tfIp.setText(ServerManager.getInstance().getIp());
 		tfPort.setText(String.valueOf(ServerManager.getInstance().getPort()));
 	}
