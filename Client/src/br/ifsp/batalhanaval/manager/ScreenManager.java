@@ -39,6 +39,10 @@ public class ScreenManager {
 		stage = primaryStage;
 	}
 	
+	public Stage getStage() {
+		return stage;
+	}
+	
 	public void setScreen(String newScreen) {
 		
 		switch (newScreen){

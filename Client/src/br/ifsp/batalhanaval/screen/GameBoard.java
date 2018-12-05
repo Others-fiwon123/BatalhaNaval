@@ -5,6 +5,7 @@ import br.ifsp.batalhanaval.gameobjects.Player;
 import br.ifsp.batalhanaval.gameobjects.Ship;
 import br.ifsp.batalhanaval.gameobjects.Tile;
 import br.ifsp.batalhanaval.manager.GameManager;
+import br.ifsp.batalhanaval.manager.ScreenManager;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -168,6 +169,7 @@ public class GameBoard {
 						GameManager.getInstance().verifyShipDestroyed(tileEnemy.getPart().getIdShip());
 						if (GameManager.getInstance().isGameEndEnemy())
 							GameManager.getInstance().changeState(GameManager.STATES.WIN);
+						
 					} else {
 						tileEnemy.setFill(Color.AQUA);
 					}
@@ -252,8 +254,15 @@ public class GameBoard {
 		}
 	}
 
+	private void configureButtonExit() {
+		ScreenManager.getInstance().getStage().setOnCloseRequest(e -> {
+			GameManager.getInstance().enemyDisconect();
+		});
+	}
+	
 	public void initialize() {
 		initBoard();
+		configureButtonExit();
 		GameManager.getInstance().startGame();
 
 	}

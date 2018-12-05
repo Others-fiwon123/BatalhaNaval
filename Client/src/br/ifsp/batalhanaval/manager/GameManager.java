@@ -108,6 +108,15 @@ public class GameManager {
 		}
 	}
 
+	public void enemyDisconect() {
+		try {
+			new PrintWriter(socket.getOutputStream(), true).println("Disconnect");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void readyGame() {
 		Ship[] ships = player.getShips();
 		String message = "Ready";
