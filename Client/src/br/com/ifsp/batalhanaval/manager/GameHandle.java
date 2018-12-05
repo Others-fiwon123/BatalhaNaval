@@ -21,7 +21,6 @@ public class GameHandle implements Runnable{
 			isReader = new InputStreamReader(socket.getInputStream());
 	        hearEnemy = new BufferedReader(isReader);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -29,7 +28,8 @@ public class GameHandle implements Runnable{
 	
 	@Override
 	public void run() {
-		String message, connect = "Connect", disconnect = "Disconnect", hit = "Hit", ready = "Ready", yourTurn = "YourTurn" ;
+		String message, 
+		connect = "Connect", disconnect = "Disconnect", hit = "Hit", ready = "Ready", youStart = "YouStart" ;
 		String[] data;
 		
 		 try 
@@ -54,7 +54,7 @@ public class GameHandle implements Runnable{
 						
 					 }
 					 GameManager.getInstance().configureBoardEnemy();
-				 }else if(data[0].equals(yourTurn)) {
+				 }else if(data[0].equals(youStart)) {
 					 if(Boolean.valueOf(data[1]))
 					 	GameManager.getInstance().changeState(GameManager.STATES.YOURTURN);
 					 else
@@ -64,9 +64,7 @@ public class GameHandle implements Runnable{
 		  } 
 		  catch (Exception ex) 
 		  {
-		     //ta_chat.append("Lost a connection. \n");
 		     ex.printStackTrace();
-		     //clientOutputStreams.remove(client);
 		  }
 	}
 	

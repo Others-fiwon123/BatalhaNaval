@@ -4,16 +4,10 @@
 package br.ifsp.ifsp.batalhanaval.handle;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
-
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 public class ClientHandler extends Thread{
 
@@ -21,7 +15,6 @@ public class ClientHandler extends Thread{
     Socket sock;
     PrintWriter client;
     
-    //Felipe
     Socket playerSocket;
     Socket enemySoket;
     PrintWriter sendPlayer;
@@ -59,31 +52,29 @@ public class ClientHandler extends Thread{
     @Override
     public void run() 
     {
-         String message, connect = "Connect", disconnect = "Disconnect", yourTurn = "YourTurn" ;
+         String message, 
+         connect = "Connect", disconnect = "Disconnect", youStart = "YouStart", hit = "Hit", ready = "Ready" ;
          String[] data;
 
          try 
          {
         	 while ((message = hearEnemy.readLine()) != null) {
         		 
-        		 //System.out.println("RECEBI SERVER");
         		 data = message.split(":");
         		 if(data[0].equals(connect)) {
         			 sendPlayer.println(connect);
-        		 }else if(data[0].equals("Hit")) {
+        		 }else if(data[0].equals(hit)) {
         			 sendPlayer.println(message);
-        		 }else if(data[0].equals("Ready")) {
+        		 }else if(data[0].equals(ready)) {
         			 sendPlayer.println(message);
-        		 }else if(data[0].equals(yourTurn)) {
+        		 }else if(data[0].equals(youStart)) {
         			 sendPlayer.println(message);
         		 }
         	 }
           } 
           catch (Exception ex) 
           {
-             //ta_chat.append("Lost a connection. \n");
              ex.printStackTrace();
-             //clientOutputStreams.remove(client);
           } 
 	} 
 }

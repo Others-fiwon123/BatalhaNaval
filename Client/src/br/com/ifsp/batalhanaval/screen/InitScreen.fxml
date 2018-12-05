@@ -33,5 +33,14 @@
          </font>
       </Label>
       <TextField layoutX="261.0" layoutY="221.0" prefHeight="41.0" prefWidth="331.0" promptText="YOUR NAME" />
+      <Button fx:id="btnConfig" layoutX="703.0" layoutY="481.0" mnemonicParsing="false" onAction="#startServerConfig" prefHeight="41.0" prefWidth="36.0">
+         <graphic>
+            <ImageView>
+               <image>
+                  <Image url="@../img/icons8_Automatic_50px_2.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

@@ -40,11 +40,11 @@ public class ServerThread implements Runnable{
             	
             	int whoStart = new Random().nextInt(2);
             	if(whoStart == 1) {
-            		writer.println("YourTurn:True");
-            		writer2.println("YourTurn:False");
+            		writer.println("YouStart:True");
+            		writer2.println("YouStart:False");
             	}else {
-            		writer.println("YourTurn:False");
-            		writer2.println("YourTurn:True");
+            		writer.println("YouStart:False");
+            		writer2.println("YouStart:True");
             	}
             }
         } catch (SocketException e) {

@@ -31,13 +31,15 @@ public class GameBoard
 {
 	@FXML
 	public Circle circlePlayer,
-		   circleEnemy;
+				  circleEnemy;
 	
 	@FXML 
 	public Pane panePlayer;
 	
 	@FXML
-	public Label lbMsg;
+	public Label lbMsg,
+				 lbPlayer,
+				 lbEnemy;
 	
 	@FXML 
 	public ImageView viewPortaAviao,
@@ -50,9 +52,6 @@ public class GameBoard
 	
 	@FXML
 	Button btnReady;
-	
-	double orgSceneX, orgSceneY;
-	double orgTranslateX, orgTranslateY;
 	
 	ImageView hold;
 	int holdSize;
@@ -83,16 +82,9 @@ public class GameBoard
 					}
 					
 					if(GameManager.getInstance().isGameEndPlayer()) {
-						Alert alert1 = new Alert(AlertType.INFORMATION);
-						alert1.setTitle("Information Dialog");
-						alert1.setHeaderText(null);
-						alert1.setContentText("YOU LOSE!");
-				
-						alert1.show();
 						GameManager.getInstance().changeState(GameManager.STATES.LOSE);
-						
 					}else {
-						GameManager.getInstance().changeState(STATES.YOURTURN);
+						GameManager.getInstance().changeState(GameManager.STATES.YOURTURN);
 					}
 			}catch(Exception e) {
 				
@@ -142,6 +134,14 @@ public class GameBoard
 			break;
 		}
 	}
+
+	public void playerReady() {
+		lbPlayer.setTextFill(Color.GREEN);
+	}
+	
+	public void enemyReady() {
+		lbEnemy.setTextFill(Color.GREEN);
+	}
 	
 	public void hideMessageShip() {
 		lbMsg.setText("Mensagem:");
@@ -159,7 +159,6 @@ public class GameBoard
 	
 	@FXML
     public void initialize() throws IOException {
-	   
 	   for(int i = 0; i < 10; i++) {
 		   for(int j = 0; j < 10; j++) {
 			   Tile tilePlayer = new Tile(null);
@@ -172,7 +171,8 @@ public class GameBoard
 				    public void handle(InputEvent event) {
 				    	
 				    	try {
-							if(GameManager.getInstance().getState() == GameManager.STATES.YOURTURN) {
+							if(GameManager.getInstance().getState() == GameManager.STATES.YOURTURN &&
+									GameManager.getInstance().isGameReady()) {
 								if(!tileEnemy.getOpen()) {
 								   int i = gridPlayer.getRowIndex(tileEnemy);
 								   int j = gridPlayer.getColumnIndex(tileEnemy);
@@ -216,32 +216,45 @@ public class GameBoard
 								
 						    	//Verifica se pode por o navio na possição
 						    	if(lastPosition <= 100) {
-									hold.setVisible(false);
 									
-									try {
-										GameManager.getInstance().setConfigurationShip(holdIdShip, true, i, j);
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-		
-							    	for(int offset = 0; offset < holdSize ; offset++) {
-							    		Player player;
+						    		boolean canPutShip = true;
+						    		for(int offset = 0; offset < holdSize ; offset++) {
 							    		Tile t = (Tile)gridPlayer.getChildren().get((j+offset)*10+i+1);
-							    		t.setFill(Color.GREENYELLOW);
+							    		if (t.getPart() != null){
+							    			canPutShip = false;
+							    		}
+							    	}
+						    		
+						    		if(canPutShip) {
+							    		hold.setVisible(false);
+										
 										try {
-											player = GameManager.getInstance().getPlayer();
-											Ship ship = player.getShips()[holdIdShip-1];
-											t.setPart(ship.getParts()[offset]);
+											GameManager.getInstance().setConfigurationShip(holdIdShip, true, i, j);
 										} catch (IOException e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
 										}
-							    	}
-							    	
-							    	verifyReady();
-							    	
-							    	hold = null;
+										
+										Player player;
+								    	for(int offset = 0; offset < holdSize ; offset++) {
+								    		
+								    		Tile t = (Tile)gridPlayer.getChildren().get((j+offset)*10+i+1);
+								    		t.setFill(Color.GREENYELLOW);
+											try {
+												player = GameManager.getInstance().getPlayer();
+												Ship ship = player.getShips()[holdIdShip-1];
+												t.setPart(ship.getParts()[offset]);
+											} catch (IOException e) {
+												// TODO Auto-generated catch block
+												e.printStackTrace();
+											}
+								    	}
+								    	
+								    	verifyReady();
+								    	
+								    	hold = null;
+								    	
+						    		}
 						    	}
 					    	}
 					    	

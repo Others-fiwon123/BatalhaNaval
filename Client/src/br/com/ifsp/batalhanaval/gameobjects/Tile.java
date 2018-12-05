@@ -11,6 +11,7 @@ public class Tile extends Rectangle{
 	public Tile(Part part){
 		this.part = part;
 		this.isOpen = false;
+		
 		this.setWidth(30);
 		this.setHeight(30);
 		this.setFill(Color.ALICEBLUE);

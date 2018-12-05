@@ -3,12 +3,14 @@ package br.com.ifsp.batalhanaval.manager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-
 import br.com.ifsp.batalhanaval.gameobjects.Part;
 import br.com.ifsp.batalhanaval.gameobjects.Player;
 import br.com.ifsp.batalhanaval.gameobjects.Ship;
 import br.com.ifsp.batalhanaval.gameobjects.Tile;
 import br.com.ifsp.batalhanaval.screen.GameBoard;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.paint.Color;
 
 public class GameManager{
@@ -18,7 +20,6 @@ public class GameManager{
 				  YOURTURN, ENEMYTURN}
 	
 	STATES state;
-	
 	GameBoard game;
 	
 	private static GameManager instance;
@@ -28,15 +29,24 @@ public class GameManager{
 	
 	Socket socket;
 	
-	private GameManager() throws IOException {
-		/*FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource(ScreenManager.GAME));
-		game = loader.getController();*/
+	boolean isReadyEnemy,
+			isReadyPlayer;
 	
+	private GameManager(){
+		isReadyEnemy = false;
+		isReadyPlayer = false;
 	}
 	
 	public STATES getState() {
 		return state;
+	}
+	
+	public boolean isGameReady() {
+		if(isReadyEnemy && isReadyPlayer) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public void configureBoardEnemy() {
@@ -50,6 +60,8 @@ public class GameManager{
 	    		t.setPart(ship.getParts()[offset]);
 	    	}
 		}
+		isReadyEnemy = true;
+		game.enemyReady();
 	}
 	
 	public Player getEnemy() {
@@ -75,9 +87,6 @@ public class GameManager{
 		
 		return instance;
 	}
-	public void sendMessage() throws IOException  {
-		new PrintWriter(socket.getOutputStream(), true).println("Connect");
-	}
 	
 	public void hit(int i, int j) {
 		game.hit(i, j);
@@ -96,6 +105,8 @@ public class GameManager{
 		}
 		try {
 			new PrintWriter(socket.getOutputStream(), true).println(message);
+			isReadyPlayer = true;
+			game.playerReady();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -120,20 +131,29 @@ public class GameManager{
 					enemy = new Player(10, 10);
 					break;
 			case WIN:
-					/*Alert alert = new Alert(AlertType.INFORMATION);
-					alert.setTitle("Information Dialog");
-					alert.setHeaderText(null);
-					alert.setContentText("YOU WIN!");
-		
-					alert.showAndWait();*/
-					break;
+					Platform.runLater(new Runnable() {
+						@Override public void run() {
+							Alert alertWin = new Alert(AlertType.INFORMATION);
+							alertWin.setTitle("Information Dialog");
+							alertWin.setHeaderText(null);
+							alertWin.setContentText("YOU WIN!");
+				
+							alertWin.showAndWait();
+						}
+						
+					});
+				break;
 			case LOSE:		
-					/*Alert alert1 = new Alert(AlertType.INFORMATION);
-					alert1.setTitle("Information Dialog");
-					alert1.setHeaderText(null);
-					alert1.setContentText("YOU LOSE!");
-			
-					alert1.showAndWait()*/;
+					Platform.runLater(new Runnable() {
+						@Override public void run() {
+							Alert alertLose = new Alert(AlertType.INFORMATION);
+							alertLose.setTitle("Information Dialog");
+							alertLose.setHeaderText(null);
+							alertLose.setContentText("YOU LOSE!");
+					
+							alertLose.showAndWait();
+						}
+					});
 					break;
 			case YOURTURN:
 					game.circlePlayer.setFill(Color.RED);
