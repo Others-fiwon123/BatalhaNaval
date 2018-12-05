@@ -60,7 +60,7 @@ public class ClientHandler extends Thread {
 
 		if (data[0].equals(connect)) {
 			sendPlayer.println(connect);
-		} else if (data[0].equals(hit) || data[0].equals(ready) || data[0].equals(youStart)) {
+		} else if (data[0].equals(hit) || data[0].equals(ready) || data[0].equals(youStart) || data[0].equals(disconnect)) {
 			sendPlayer.println(message);
 		}
 	}

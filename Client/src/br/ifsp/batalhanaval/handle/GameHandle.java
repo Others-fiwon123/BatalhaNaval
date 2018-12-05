@@ -45,7 +45,13 @@ public class GameHandle implements Runnable {
 			setShipInformations(GameManager.getInstance().getEnemy(), data);
 		} else if (data[0].equals(youStart)) {
 			changeTurn(Boolean.valueOf(data[1]));
+		} else if (data[0].equals(disconnect)) {
+			sendDisconnectMessage();
 		}
+	}
+
+	private void sendDisconnectMessage() {
+		GameManager.getInstance().changeState(GameManager.STATES.ENDGAME);;
 	}
 
 	private void setShipInformations(Player enemy, String[] data) throws IOException {
