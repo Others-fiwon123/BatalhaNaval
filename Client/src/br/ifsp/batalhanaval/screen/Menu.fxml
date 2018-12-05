@@ -4,7 +4,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="570.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ifsp.batalhanaval.screen.Menu">
+<AnchorPane prefHeight="570.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ifsp.batalhanaval.screen.Menu">
    <children>
       <ScrollPane layoutX="37.0" layoutY="34.0" prefHeight="484.0" prefWidth="235.0" />
       <Button layoutX="374.0" layoutY="226.0" mnemonicParsing="false" onAction="#startGameBoard" prefHeight="59.0" prefWidth="221.0" text="MATCH" />

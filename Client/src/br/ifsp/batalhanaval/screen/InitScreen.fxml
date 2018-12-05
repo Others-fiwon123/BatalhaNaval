@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="559.0" prefWidth="803.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ifsp.batalhanaval.screen.InitScreen">
+<AnchorPane prefHeight="559.0" prefWidth="803.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ifsp.batalhanaval.screen.InitScreen">
    <children>
       <ImageView layoutX="210.0" layoutY="226.0">
          <image>

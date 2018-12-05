@@ -14,7 +14,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="552.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ifsp.batalhanaval.screen.GameBoard">
+<AnchorPane prefHeight="552.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ifsp.batalhanaval.screen.GameBoard">
    <children>
       <Pane fx:id="panePlayer" prefHeight="552.0" prefWidth="378.0">
          <children>

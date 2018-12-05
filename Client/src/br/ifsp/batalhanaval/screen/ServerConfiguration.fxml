@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="288.0" prefWidth="662.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ifsp.batalhanaval.screen.ServerConfiguration">
+<AnchorPane prefHeight="288.0" prefWidth="662.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ifsp.batalhanaval.screen.ServerConfiguration">
    <children>
       <Label layoutX="50.0" layoutY="109.0" text="IP:">
          <font>
@@ -23,12 +23,12 @@
             <Font size="32.0" />
          </font>
       </Label>
-      <TextField fx:id="tfIp" layoutX="135.0" layoutY="109.0" prefHeight="25.0" prefWidth="401.0">
+      <TextField fx:id="tfIp" disable="true" layoutX="135.0" layoutY="109.0" prefHeight="25.0" prefWidth="401.0">
          <font>
             <Font size="16.0" />
          </font>
       </TextField>
-      <TextField fx:id="tfPort" layoutX="135.0" layoutY="164.0" prefHeight="25.0" prefWidth="401.0">
+      <TextField fx:id="tfPort" disable="true" layoutX="135.0" layoutY="164.0" prefHeight="25.0" prefWidth="401.0">
          <font>
             <Font size="16.0" />
          </font>
