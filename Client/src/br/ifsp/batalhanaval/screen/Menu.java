@@ -13,11 +13,10 @@ public class Menu {
 
 	@FXML
 	public void startGameBoard(ActionEvent event) throws IOException {
-		
-		
+
 		ScreenManager.getInstance().setScreen(ScreenManager.GAMEBOARD);
 		ScreenManager.getInstance().showScreen();
-		
+
 		GameManager.getInstance().setGameController(ScreenManager.getInstance().getLoader().getController());
 
 		// Inicia comunicação com o servidor

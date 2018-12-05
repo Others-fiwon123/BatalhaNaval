@@ -12,10 +12,10 @@ public class ServerConfiguration {
 	TextField tfIp, tfPort;
 
 	public void saveConfiguration(ActionEvent event) {
-		
+
 		ScreenManager.getInstance().setScreen(ScreenManager.INITSCREEN);
 		ScreenManager.getInstance().showScreen();
-		
+
 	}
 
 	@FXML

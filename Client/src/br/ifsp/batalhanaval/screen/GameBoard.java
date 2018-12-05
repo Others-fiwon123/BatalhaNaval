@@ -58,7 +58,15 @@ public class GameBoard {
 	}
 
 	private Tile getTileBoard(GridPane board, int i, int j) {
-		return (Tile) gridPlayer.getChildren().get(j * 10 + i + 1);
+		Board boardPattern = GameManager.getInstance().getBoardPattern();
+
+		int maxTiles = boardPattern.getHeight() * boardPattern.getWidth();
+		int index = j * boardPattern.getHeight() + i + 1;
+
+		if (index <= maxTiles)
+			return (Tile) gridPlayer.getChildren().get(index);
+
+		return null;
 	}
 
 	public void hit(int i, int j) {
@@ -170,6 +178,26 @@ public class GameBoard {
 		}
 	};
 
+	private boolean canPutShip(GridPane board, int i, int j) {
+
+		boolean canPutShip = true;
+
+		Tile lastTile = getTileBoard(board, i, j + holdSize - 1);
+
+		if (lastTile != null) {
+			for (int offset = 0; offset < holdSize; offset++) {
+				Tile t = getTileBoard(board, i, j + offset);
+				if (t.getPart() != null) {
+					canPutShip = false;
+				}
+			}
+		} else {
+			canPutShip = false;
+		}
+
+		return canPutShip;
+	}
+
 	EventHandler<InputEvent> handlerClickBoardPlayer = new EventHandler<InputEvent>() {
 		public void handle(InputEvent event) {
 
@@ -179,39 +207,24 @@ public class GameBoard {
 				int i = gridPlayer.getRowIndex(tilePlayer);
 				int j = gridPlayer.getColumnIndex(tilePlayer);
 
-				int lastPosition = (j + holdSize - 1) * 10 + i + 1;
+				if (canPutShip(gridPlayer, i, j)) {
+					hold.setVisible(false);
 
-				// Verifica se pode por o navio na posição
-				if (lastPosition <= 100) {
+					GameManager.getInstance().setConfigurationShip(holdIdShip, true, i, j);
 
-					boolean canPutShip = true;
+					Player player = GameManager.getInstance().getPlayer();
 					for (int offset = 0; offset < holdSize; offset++) {
-						Tile t = (Tile) gridPlayer.getChildren().get((j + offset) * 10 + i + 1);
-						if (t.getPart() != null) {
-							canPutShip = false;
-						}
+
+						Tile t = getTileBoard(gridPlayer, i, j + offset);
+						t.setFill(Color.GREENYELLOW);
+						Ship ship = player.getShips()[holdIdShip - 1];
+						t.setPart(ship.getParts()[offset]);
 					}
 
-					if (canPutShip) {
-						hold.setVisible(false);
+					verifyReady();
 
-						GameManager.getInstance().setConfigurationShip(holdIdShip, true, i, j);
+					hold = null;
 
-						Player player;
-						for (int offset = 0; offset < holdSize; offset++) {
-
-							Tile t = (Tile) gridPlayer.getChildren().get((j + offset) * 10 + i + 1);
-							t.setFill(Color.GREENYELLOW);
-							player = GameManager.getInstance().getPlayer();
-							Ship ship = player.getShips()[holdIdShip - 1];
-							t.setPart(ship.getParts()[offset]);
-						}
-
-						verifyReady();
-
-						hold = null;
-
-					}
 				}
 			}
 

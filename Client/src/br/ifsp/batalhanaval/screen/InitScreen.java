@@ -20,6 +20,6 @@ public class InitScreen {
 
 		ScreenManager.getInstance().setScreen(ScreenManager.SERVERCONFIGURATION);
 		ScreenManager.getInstance().showScreen();
-	
+
 	}
 }

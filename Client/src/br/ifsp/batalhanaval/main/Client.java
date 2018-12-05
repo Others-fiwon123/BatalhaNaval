@@ -13,7 +13,7 @@ public class Client extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		
+
 		ScreenManager.getInstance().setStage(primaryStage);
 		ScreenManager.getInstance().showScreen();
 	}
