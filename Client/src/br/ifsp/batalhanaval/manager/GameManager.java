@@ -116,7 +116,7 @@ public class GameManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void readyGame() {
 		Ship[] ships = player.getShips();
 		String message = "Ready";
@@ -146,7 +146,17 @@ public class GameManager {
 	public void changeState(STATES newState) {
 		switch (newState) {
 		case ENDGAME:
-			// Send Signal wich game end (possible send (-1, -1))
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					Alert alertLose = new Alert(AlertType.INFORMATION);
+					alertLose.setTitle("Information Dialog");
+					alertLose.setHeaderText(null);
+					alertLose.setContentText("Enemy Disconect!");
+
+					alertLose.showAndWait();
+				}
+			});
 			break;
 		case START:
 			player = new Player(10, 10);
