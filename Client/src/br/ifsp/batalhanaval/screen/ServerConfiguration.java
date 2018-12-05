@@ -22,6 +22,7 @@ public class ServerConfiguration {
 		
 		ScreenManager.getInstance().setScreen(ScreenManager.INITSCREEN);
 		ScreenManager.getInstance().showScreen();
+		
 	}
 
 	@FXML
