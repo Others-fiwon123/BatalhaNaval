@@ -22,20 +22,6 @@ public class Menu {
 		
 		ScreenManager.getInstance().setScreen(ScreenManager.GAMEBOARD);
 		ScreenManager.getInstance().showScreen();
-		/*FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource(ScreenManager.GAMEBOARD));
-		Parent parent;
-		try {
-			parent = loader.load();
-			Scene scene = new Scene(parent);
-			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-			stage.setScene(scene);
-
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
 		
 		GameManager.getInstance().setGameController(ScreenManager.getInstance().getLoader().getController());
 

@@ -22,20 +22,6 @@ public class ServerConfiguration {
 		
 		ScreenManager.getInstance().setScreen(ScreenManager.INITSCREEN);
 		ScreenManager.getInstance().showScreen();
-		/*FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource(ScreenManager.INITSCREEN));
-		Parent parent = null;
-
-		try {
-			parent = loader.load();
-		} catch (IOException e) {
-			System.out.println("Exceção não possível carregar a tela inicial.");
-		}
-		
-		Scene scene = new Scene(parent);
-		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		stage.setScene(scene);
-		 */
 	}
 
 	@FXML
