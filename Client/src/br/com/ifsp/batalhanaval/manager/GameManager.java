@@ -4,14 +4,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import br.com.ifsp.batalhanaval.gameobjects.Board;
 import br.com.ifsp.batalhanaval.gameobjects.Part;
 import br.com.ifsp.batalhanaval.gameobjects.Player;
 import br.com.ifsp.batalhanaval.gameobjects.Ship;
 import br.com.ifsp.batalhanaval.gameobjects.Tile;
 import br.com.ifsp.batalhanaval.screen.GameBoard;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public class GameManager{
 	
@@ -50,7 +48,6 @@ public class GameManager{
 	    		Tile t = (Tile)game.gridEnemy.getChildren().get((ship.getFistPositionColumn()+offset)*10+
 	    																	ship.getFistPositionRow()+1);
 	    		t.setPart(ship.getParts()[offset]);
-	    		System.out.println("id:"+i);
 	    	}
 		}
 	}
@@ -113,14 +110,6 @@ public class GameManager{
 		
 	}
 	
-	/*public Board getEnemyBoard() {
-		return enemyBoard;
-	}
-	
-	public Board getPlayerBoard() {
-		return playerBoard;
-	}*/
-	
 	public void changeState(STATES newState) {
 		switch(newState) {
 			case ENDGAME:
@@ -131,8 +120,20 @@ public class GameManager{
 					enemy = new Player(10, 10);
 					break;
 			case WIN:
+					/*Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Information Dialog");
+					alert.setHeaderText(null);
+					alert.setContentText("YOU WIN!");
+		
+					alert.showAndWait();*/
 					break;
-			case LOSE:
+			case LOSE:		
+					/*Alert alert1 = new Alert(AlertType.INFORMATION);
+					alert1.setTitle("Information Dialog");
+					alert1.setHeaderText(null);
+					alert1.setContentText("YOU LOSE!");
+			
+					alert1.showAndWait()*/;
 					break;
 			case YOURTURN:
 					game.circlePlayer.setFill(Color.RED);
@@ -147,19 +148,54 @@ public class GameManager{
 		state = newState;
 	}
 	
+	public void verifyShipDestroyed(int idShip) {
+		Ship ship = enemy.getShips()[idShip-1];
+		Part[] parts = ship.getParts();
+		
+		boolean isShipDestroyed = true;
+		
+		for (int i = 0; i < parts.length; i++) {
+			if(!parts[i].isPartDestruct()) {
+				isShipDestroyed = false;
+			}
+		}
+		
+		if(isShipDestroyed) {
+			game.showMessageShip(idShip);
+		}else {
+			game.hideMessageShip();
+		}
+	}
+	
 	public void startGame() {
 		changeState(STATES.START);
 	}
 	
-	public boolean isGameEnd() {
+	public boolean isGameEndPlayer() {
 		
-		boolean isEnd = false;
+		boolean isEnd = true;
 		
 		Ship[] ships = player.getShips();
 		for(Ship ship : ships) {
 			for(Part part : ship.getParts()) {
-				if(part.isPartDestruct()) {
-					isEnd = true;
+				if(!part.isPartDestruct()) {
+					isEnd = false;
+				}
+			}
+		}
+		
+		return isEnd;
+	}
+	
+	public boolean isGameEndEnemy() {
+		
+		boolean isEnd = true;
+		
+		Ship[] ships = enemy.getShips();
+		for(Ship ship : ships) {
+			for(Part part : ship.getParts()) {
+				if(!part.isPartDestruct()) {
+					isEnd = false;
 				}
 			}
 		}

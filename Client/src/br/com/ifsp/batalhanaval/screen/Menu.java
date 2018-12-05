@@ -1,9 +1,7 @@
 package br.com.ifsp.batalhanaval.screen;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.Socket;
-import java.util.Scanner;
 
 import br.com.ifsp.batalhanaval.manager.GameHandle;
 import br.com.ifsp.batalhanaval.manager.GameManager;
@@ -19,19 +17,27 @@ import javafx.stage.Stage;
 public class Menu {
 
 	
-	@FXML public void startGameBoard(ActionEvent event) throws IOException {
+	@FXML public void startGameBoard(ActionEvent event) {
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource(ScreenManager.GAME));
-		Parent parent = loader.load();
-		Scene scene = new Scene(parent);
-		Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-		stage.setScene(scene);
-		GameManager.getInstance().setGameController(loader.getController());
-		
-		//Inicia comunicação com o servidor
-		Socket socket = new Socket("localhost", 7777);
-		GameManager.getInstance().setSocket(socket);
-		Thread t = new Thread(new GameHandle(stage, socket));
-		t.start();
+		loader.setLocation(getClass().getResource(ScreenManager.GAMEBOARD));
+		Parent parent;
+		try {
+			parent = loader.load();
+			Scene scene = new Scene(parent);
+			Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+			stage.setScene(scene);
+			GameManager.getInstance().setGameController(loader.getController());
+			
+			//Inicia comunicação com o servidor
+			Socket socket = new Socket("localhost", 7777);
+			GameManager.getInstance().setSocket(socket);
+			Thread t = new Thread(new GameHandle(stage, socket));
+			t.start();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 }

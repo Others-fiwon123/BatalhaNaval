@@ -1,41 +1,29 @@
 
 package br.com.ifsp.batalhanaval.main;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintStream;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Scanner;
-
-import br.com.ifsp.batalhanaval.manager.GameManager;
 import br.com.ifsp.batalhanaval.manager.ScreenManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import sun.applet.Main;
 
 public class Client extends Application{
 	
-	public static void  main(String args[]) throws UnknownHostException, IOException {
-	
+	public static void  main(String args[]){
 		launch(args);
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
-		
-		System.out.println(getClass().getResource("../screen/Menu.fxml").getPath());		
-		// TODO Auto-generated method stub
+	public void start(Stage primaryStage){
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource(ScreenManager.LOGIN));
+			
+			//Inicia Tela inicial
+			Parent root = FXMLLoader.load(getClass().getResource(ScreenManager.INITSCREEN));
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

@@ -1,16 +1,5 @@
 package br.com.ifsp.batalhanaval.gameobjects;
 
-import com.sun.javafx.geom.BaseBounds;
-import com.sun.javafx.geom.transform.BaseTransform;
-import com.sun.javafx.jmx.MXNodeAlgorithm;
-import com.sun.javafx.jmx.MXNodeAlgorithmContext;
-import com.sun.javafx.sg.prism.NGNode;
-
-import br.com.ifsp.batalhanaval.manager.GameManager;
-import br.com.ifsp.batalhanaval.screen.GameBoard;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.input.InputEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 

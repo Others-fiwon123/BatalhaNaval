@@ -1,12 +1,12 @@
 package br.com.ifsp.batalhanaval.screen;
 
 import java.io.IOException;
-import br.com.ifsp.batalhanaval.gameobjects.Board;
 import br.com.ifsp.batalhanaval.gameobjects.Player;
 import br.com.ifsp.batalhanaval.gameobjects.Ship;
 import br.com.ifsp.batalhanaval.gameobjects.Tile;
 import br.com.ifsp.batalhanaval.manager.GameManager;
 import br.com.ifsp.batalhanaval.manager.ScreenManager;
+import br.com.ifsp.batalhanaval.manager.GameManager.STATES;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -14,8 +14,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
@@ -23,7 +25,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class GameBoard
@@ -36,10 +37,7 @@ public class GameBoard
 	public Pane panePlayer;
 	
 	@FXML
-	public Label lbPortaAviao,
-		  lbEncouracado,
-		  lbCruzador,
-		  lbSubmarino;
+	public Label lbMsg;
 	
 	@FXML 
 	public ImageView viewPortaAviao,
@@ -62,7 +60,7 @@ public class GameBoard
 	
 	public void  OnClickReady(MouseEvent evt) throws IOException {
 		GameManager.getInstance().readyGame();
-		System.out.println("enviado menssagem Ready");
+		btnReady.setDisable(true);
 	}
 	
 	@FXML
@@ -79,13 +77,29 @@ public class GameBoard
 					Tile t = (Tile)gridPlayer.getChildren().get(j*10+i+1);
 					if(t.getPart() == null)
 						t.setFill(Color.AQUA);
-					else
+					else {
 						t.setFill(Color.RED);
+						t.getPart().destroyPart();
+					}
+					
+					if(GameManager.getInstance().isGameEndPlayer()) {
+						Alert alert1 = new Alert(AlertType.INFORMATION);
+						alert1.setTitle("Information Dialog");
+						alert1.setHeaderText(null);
+						alert1.setContentText("YOU LOSE!");
+				
+						alert1.show();
+						GameManager.getInstance().changeState(GameManager.STATES.LOSE);
+						
+					}else {
+						GameManager.getInstance().changeState(STATES.YOURTURN);
+					}
 			}catch(Exception e) {
 				
 			}
 		
 	}
+	
 	
 	public void OnMouseClick(MouseEvent evt) {
 		
@@ -112,6 +126,27 @@ public class GameBoard
 		hold.setOpacity(1);
 	}
 	
+	public void showMessageShip(int idShip) {
+		switch(idShip) {
+		case 1:
+			lbMsg.setText("Mensagem: Porta Avião abatido");
+			break;
+		case 2:
+			lbMsg.setText("Mensagem: Encouraçado abatido");
+			break;
+		case 3:
+			lbMsg.setText("Mensagem: Cruzador abatido");
+			break;
+		case 4:
+			lbMsg.setText("Mensagem: Submarino abatido");
+			break;
+		}
+	}
+	
+	public void hideMessageShip() {
+		lbMsg.setText("Mensagem:");
+	}
+	
 	public void verifyReady() {
 		if(!viewPortaAviao.isVisible() &&
 			!viewEncouracado.isVisible() &&
@@ -124,7 +159,6 @@ public class GameBoard
 	
 	@FXML
     public void initialize() throws IOException {
-	   Board board = new Board(10, 10);
 	   
 	   for(int i = 0; i < 10; i++) {
 		   for(int j = 0; j < 10; j++) {
@@ -140,11 +174,10 @@ public class GameBoard
 				    	try {
 							if(GameManager.getInstance().getState() == GameManager.STATES.YOURTURN) {
 								if(!tileEnemy.getOpen()) {
-								   tileEnemy.setFill(Color.AQUA);
-								   
 								   int i = gridPlayer.getRowIndex(tileEnemy);
 								   int j = gridPlayer.getColumnIndex(tileEnemy);
 								   try {
+									
 									GameManager.getInstance().passTurn(i, j);
 									} catch (IOException e) {
 										// TODO Auto-generated catch block
@@ -152,7 +185,14 @@ public class GameBoard
 									}
 								   
 								   if(tileEnemy.getPart() != null) {
+									   tileEnemy.getPart().destroyPart();
 									   tileEnemy.setFill(Color.RED);
+									   
+										GameManager.getInstance().verifyShipDestroyed(tileEnemy.getPart().getIdShip());
+										if (GameManager.getInstance().isGameEndEnemy())
+											GameManager.getInstance().changeState(GameManager.STATES.WIN);
+								   }else {
+									   tileEnemy.setFill(Color.AQUA);
 								   }
 								   tileEnemy.setOpen(true);
 								}
@@ -163,24 +203,6 @@ public class GameBoard
 						}
 				    }
 				};
-				
-				  EventHandler<InputEvent> handlerEntered = new EventHandler<InputEvent>() {
-					    public void handle(InputEvent event) {
-					    	//CONTROLLER ABOUT WHERE TO PUT
-					    	/*
-							    int i = gridPlayer.getRowIndex(tilePlayer.getView());
-							    int j = gridPlayer.getColumnIndex(tilePlayer.getView());
-							    
-							    System.out.println(i + "  " + j);
-							    ((Rectangle)tilePlayer.getView()).setFill(Color.GREENYELLOW);
-						    	for(int offset = 1; offset <= 4 ; offset++) {
-						    		Rectangle r = (Rectangle)gridPlayer.getChildren().get((j+offset)*10+i+1);
-						    		r.setFill(Color.GREENYELLOW);
-						    	}
-						    */
-					    }
-					       
-				  };
 				  
 				  EventHandler<InputEvent> handlerClicked = new EventHandler<InputEvent>() {
 					    public void handle(InputEvent event) {
@@ -227,8 +249,6 @@ public class GameBoard
 					};
 			
 				tileEnemy.setOnMouseClicked(handlerTileEnemy);
-				
-				tilePlayer.setOnMouseEntered(handlerEntered);
 				tilePlayer.setOnMouseClicked(handlerClicked);
 		   }
 	   }

@@ -66,7 +66,7 @@ public class ClientHandler extends Thread{
          {
         	 while ((message = hearEnemy.readLine()) != null) {
         		 
-        		 System.out.println("RECEBI SERVER");
+        		 //System.out.println("RECEBI SERVER");
         		 data = message.split(":");
         		 if(data[0].equals(connect)) {
         			 sendPlayer.println(connect);
@@ -78,36 +78,6 @@ public class ClientHandler extends Thread{
         			 sendPlayer.println(message);
         		 }
         	 }
-        	 
-             /*while ((message = reader.readLine()) != null) 
-             {
-                 
-                 data = message.split(":");
-                 
-                 for (String token:data) 
-                 {
-                     //ta_chat.append(token + "\n");
-                 }
-
-                 if (data[2].equals(connect)) 
-                 {
-                     //tellEveryone((data[0] + ":" + data[1] + ":" + chat));
-                     //userAdd(data[0]);
-                 } 
-                 else if (data[2].equals(disconnect)) 
-                 {
-                     //tellEveryone((data[0] + ":has disconnected." + ":" + chat));
-                     //userRemove(data[0]);
-                 } 
-                 else if (data[2].equals(chat)) 
-                 {
-                     //tellEveryone(message);
-                 } 
-                 else 
-                 {
-                     //ta_chat.append("No Conditions were met. \n");
-                 }
-             } */
           } 
           catch (Exception ex) 
           {
