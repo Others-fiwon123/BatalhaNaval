@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import br.ifsp.batalhanaval.gameobjects.Board;
 import br.ifsp.batalhanaval.gameobjects.Part;
 import br.ifsp.batalhanaval.gameobjects.Player;
 import br.ifsp.batalhanaval.gameobjects.Ship;
@@ -23,10 +24,12 @@ public class GameManager {
 	STATES state;
 	GameBoard game;
 
-	private static GameManager instance;
+	static GameManager instance;
 
 	Player player;
 	Player enemy;
+
+	Board boardPattern;
 
 	Socket socket;
 
@@ -35,6 +38,11 @@ public class GameManager {
 	private GameManager() {
 		isReadyEnemy = false;
 		isReadyPlayer = false;
+		boardPattern = new Board(10, 10);
+	}
+
+	public Board getBoardPattern() {
+		return boardPattern;
 	}
 
 	public STATES getState() {
@@ -55,7 +63,7 @@ public class GameManager {
 		for (int i = 0; i < ships.length; i++) {
 			Ship ship = ships[i];
 			for (int offset = 0; offset < ship.getSize(); offset++) {
-				Tile t = (Tile) game.gridEnemy.getChildren()
+				Tile t = (Tile) game.getGridEnemy().getChildren()
 						.get((ship.getFistPositionColumn() + offset) * 10 + ship.getFistPositionRow() + 1);
 				t.setPart(ship.getParts()[offset]);
 			}
@@ -80,7 +88,7 @@ public class GameManager {
 		game = gameBoard;
 	}
 
-	public static GameManager getInstance() throws IOException {
+	public static GameManager getInstance() {
 		if (instance == null) {
 			instance = new GameManager();
 		}
@@ -92,8 +100,12 @@ public class GameManager {
 		game.hit(i, j);
 	}
 
-	public void sendMessage(int i, int j) throws IOException {
-		new PrintWriter(socket.getOutputStream(), true).println("Hit:" + i + ":" + j);
+	public void sendMessage(int i, int j) {
+		try {
+			new PrintWriter(socket.getOutputStream(), true).println("Hit:" + i + ":" + j);
+		} catch (IOException e) {
+			System.out.println("Exception Server Indisponível");
+		}
 	}
 
 	public void readyGame() {
@@ -103,14 +115,15 @@ public class GameManager {
 			message += ":" + ships[i].getId() + "-" + ships[i].getHorizontal() + "-" + ships[i].getFistPositionRow()
 					+ "-" + ships[i].getFistPositionColumn();
 		}
+
 		try {
 			new PrintWriter(socket.getOutputStream(), true).println(message);
-			isReadyPlayer = true;
-			game.playerReady();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Exception Server Indisponível");
 		}
+		isReadyPlayer = true;
+		game.playerReady();
+
 	}
 
 	public void setConfigurationShip(int id, boolean isHorizontal, int firstPositionRow, int firstPositinColumn) {
@@ -158,12 +171,12 @@ public class GameManager {
 			});
 			break;
 		case YOURTURN:
-			game.circlePlayer.setFill(Color.RED);
-			game.circleEnemy.setFill(Color.GRAY);
+			game.getCirclePlayer().setFill(Color.RED);
+			game.getCircleEnemy().setFill(Color.GRAY);
 			break;
 		case ENEMYTURN:
-			game.circlePlayer.setFill(Color.GRAY);
-			game.circleEnemy.setFill(Color.RED);
+			game.getCirclePlayer().setFill(Color.GRAY);
+			game.getCircleEnemy().setFill(Color.RED);
 			break;
 		}
 
@@ -227,11 +240,6 @@ public class GameManager {
 
 	public void passTurn(int i, int j) {
 		changeState(STATES.ENEMYTURN);
-		try {
-			sendMessage(i, j);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		sendMessage(i, j);
 	}
 }

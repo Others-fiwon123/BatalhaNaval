@@ -2,6 +2,7 @@ package br.ifsp.batalhanaval.screen;
 
 import java.io.IOException;
 
+import br.ifsp.batalhanaval.gameobjects.Board;
 import br.ifsp.batalhanaval.gameobjects.Player;
 import br.ifsp.batalhanaval.gameobjects.Ship;
 import br.ifsp.batalhanaval.gameobjects.Tile;
@@ -30,19 +31,19 @@ import javafx.stage.Stage;
 
 public class GameBoard {
 	@FXML
-	public Circle circlePlayer, circleEnemy;
+	Circle circlePlayer, circleEnemy;
 
 	@FXML
-	public Pane panePlayer;
+	Pane panePlayer;
 
 	@FXML
-	public Label lbMsg, lbPlayer, lbEnemy;
+	Label lbMsg, lbPlayer, lbEnemy;
 
 	@FXML
-	public ImageView viewPortaAviao, viewEncouracado, viewCruzador, viewSubmarino;
+	ImageView viewPortaAviao, viewEncouracado, viewCruzador, viewSubmarino;
 
 	@FXML
-	public GridPane gridPlayer, gridEnemy;
+	GridPane gridPlayer, gridEnemy;
 
 	@FXML
 	Button btnReady;
@@ -51,42 +52,46 @@ public class GameBoard {
 	int holdSize;
 	int holdIdShip;
 
-	public void OnClickReady(MouseEvent evt) throws IOException {
+	public Circle getCirclePlayer() {
+		return circlePlayer;
+	}
+
+	public Circle getCircleEnemy() {
+		return circleEnemy;
+	}
+
+	public GridPane getGridEnemy() {
+		return gridEnemy;
+	}
+
+	public void OnClickReady(MouseEvent evt) {
 		GameManager.getInstance().readyGame();
 		btnReady.setDisable(true);
 	}
 
-	@FXML
-	public void startMenu(ActionEvent event) throws IOException {
-		Parent parent = FXMLLoader.load(getClass().getResource(ScreenManager.MENU));
-		Scene scene = new Scene(parent);
-		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		stage.setScene(scene);
-		stage.show();
+	private Tile getTileBoard(GridPane board, int i, int j) {
+		return (Tile) gridPlayer.getChildren().get(j * 10 + i + 1);
 	}
 
 	public void hit(int i, int j) {
-		try {
-			Tile t = (Tile) gridPlayer.getChildren().get(j * 10 + i + 1);
-			if (t.getPart() == null)
-				t.setFill(Color.AQUA);
-			else {
-				t.setFill(Color.RED);
-				t.getPart().destroyPart();
-			}
+		Tile t = getTileBoard(gridPlayer, i, j);
 
-			if (GameManager.getInstance().isGameEndPlayer()) {
-				GameManager.getInstance().changeState(GameManager.STATES.LOSE);
-			} else {
-				GameManager.getInstance().changeState(GameManager.STATES.YOURTURN);
-			}
-		} catch (Exception e) {
+		if (t.getPart() == null)
+			t.setFill(Color.AQUA);
+		else {
+			t.setFill(Color.RED);
+			t.getPart().destroyPart();
+		}
 
+		if (GameManager.getInstance().isGameEndPlayer()) {
+			GameManager.getInstance().changeState(GameManager.STATES.LOSE);
+		} else {
+			GameManager.getInstance().changeState(GameManager.STATES.YOURTURN);
 		}
 
 	}
 
-	public void OnMouseClick(MouseEvent evt) {
+	public void OnMouseClickImageView(MouseEvent evt) {
 
 		if (hold != null) {
 			hold.setOpacity(0.25);
@@ -148,115 +153,106 @@ public class GameBoard {
 		}
 	}
 
-	@FXML
-	public void initialize() throws IOException {
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
+	EventHandler<InputEvent> handlerClickBoardEnemy = new EventHandler<InputEvent>() {
+		public void handle(InputEvent event) {
+
+			Tile tileEnemy = (Tile) event.getTarget();
+
+			if (GameManager.getInstance().getState() == GameManager.STATES.YOURTURN
+					&& GameManager.getInstance().isGameReady()) {
+				if (!tileEnemy.getOpen()) {
+					int i = gridPlayer.getRowIndex(tileEnemy);
+					int j = gridPlayer.getColumnIndex(tileEnemy);
+					GameManager.getInstance().passTurn(i, j);
+
+					if (tileEnemy.getPart() != null) {
+						tileEnemy.getPart().destroyPart();
+						tileEnemy.setFill(Color.RED);
+
+						GameManager.getInstance().verifyShipDestroyed(tileEnemy.getPart().getIdShip());
+						if (GameManager.getInstance().isGameEndEnemy())
+							GameManager.getInstance().changeState(GameManager.STATES.WIN);
+					} else {
+						tileEnemy.setFill(Color.AQUA);
+					}
+
+					tileEnemy.setOpen(true);
+				}
+			}
+		}
+	};
+
+	EventHandler<InputEvent> handlerClickBoardPlayer = new EventHandler<InputEvent>() {
+		public void handle(InputEvent event) {
+
+			Tile tilePlayer = (Tile) event.getTarget();
+
+			if (hold != null) {
+				int i = gridPlayer.getRowIndex(tilePlayer);
+				int j = gridPlayer.getColumnIndex(tilePlayer);
+
+				int lastPosition = (j + holdSize - 1) * 10 + i + 1;
+
+				// Verifica se pode por o navio na posição
+				if (lastPosition <= 100) {
+
+					boolean canPutShip = true;
+					for (int offset = 0; offset < holdSize; offset++) {
+						Tile t = (Tile) gridPlayer.getChildren().get((j + offset) * 10 + i + 1);
+						if (t.getPart() != null) {
+							canPutShip = false;
+						}
+					}
+
+					if (canPutShip) {
+						hold.setVisible(false);
+
+						GameManager.getInstance().setConfigurationShip(holdIdShip, true, i, j);
+
+						Player player;
+						for (int offset = 0; offset < holdSize; offset++) {
+
+							Tile t = (Tile) gridPlayer.getChildren().get((j + offset) * 10 + i + 1);
+							t.setFill(Color.GREENYELLOW);
+							player = GameManager.getInstance().getPlayer();
+							Ship ship = player.getShips()[holdIdShip - 1];
+							t.setPart(ship.getParts()[offset]);
+						}
+
+						verifyReady();
+
+						hold = null;
+
+					}
+				}
+			}
+
+		}
+	};
+
+	public void initBoard() {
+		Board boardPattern = null;
+
+		boardPattern = GameManager.getInstance().getBoardPattern();
+
+		for (int i = 0; i < boardPattern.getHeight(); i++) {
+			for (int j = 0; j < boardPattern.getWidth(); j++) {
+
 				Tile tilePlayer = new Tile(null);
+				tilePlayer.setOnMouseClicked(handlerClickBoardPlayer);
+
 				Tile tileEnemy = new Tile(null);
+				tileEnemy.setOnMouseClicked(handlerClickBoardEnemy);
 
 				gridPlayer.add(tilePlayer, i, j, 1, 1);
 				gridEnemy.add(tileEnemy, i, j, 1, 1);
 
-				EventHandler<InputEvent> handlerTileEnemy = new EventHandler<InputEvent>() {
-					public void handle(InputEvent event) {
-
-						try {
-							if (GameManager.getInstance().getState() == GameManager.STATES.YOURTURN
-									&& GameManager.getInstance().isGameReady()) {
-								if (!tileEnemy.getOpen()) {
-									int i = gridPlayer.getRowIndex(tileEnemy);
-									int j = gridPlayer.getColumnIndex(tileEnemy);
-									try {
-
-										GameManager.getInstance().passTurn(i, j);
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-
-									if (tileEnemy.getPart() != null) {
-										tileEnemy.getPart().destroyPart();
-										tileEnemy.setFill(Color.RED);
-
-										GameManager.getInstance().verifyShipDestroyed(tileEnemy.getPart().getIdShip());
-										if (GameManager.getInstance().isGameEndEnemy())
-											GameManager.getInstance().changeState(GameManager.STATES.WIN);
-									} else {
-										tileEnemy.setFill(Color.AQUA);
-									}
-
-									tileEnemy.setOpen(true);
-								}
-							}
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				};
-
-				EventHandler<InputEvent> handlerClicked = new EventHandler<InputEvent>() {
-					public void handle(InputEvent event) {
-
-						if (hold != null) {
-							int i = gridPlayer.getRowIndex(tilePlayer);
-							int j = gridPlayer.getColumnIndex(tilePlayer);
-
-							int lastPosition = (j + holdSize - 1) * 10 + i + 1;
-
-							// Verifica se pode por o navio na possição
-							if (lastPosition <= 100) {
-
-								boolean canPutShip = true;
-								for (int offset = 0; offset < holdSize; offset++) {
-									Tile t = (Tile) gridPlayer.getChildren().get((j + offset) * 10 + i + 1);
-									if (t.getPart() != null) {
-										canPutShip = false;
-									}
-								}
-
-								if (canPutShip) {
-									hold.setVisible(false);
-
-									try {
-										GameManager.getInstance().setConfigurationShip(holdIdShip, true, i, j);
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-
-									Player player;
-									for (int offset = 0; offset < holdSize; offset++) {
-
-										Tile t = (Tile) gridPlayer.getChildren().get((j + offset) * 10 + i + 1);
-										t.setFill(Color.GREENYELLOW);
-										try {
-											player = GameManager.getInstance().getPlayer();
-											Ship ship = player.getShips()[holdIdShip - 1];
-											t.setPart(ship.getParts()[offset]);
-										} catch (IOException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										}
-									}
-
-									verifyReady();
-
-									hold = null;
-
-								}
-							}
-						}
-
-					}
-				};
-
-				tileEnemy.setOnMouseClicked(handlerTileEnemy);
-				tilePlayer.setOnMouseClicked(handlerClicked);
 			}
 		}
+	}
 
+	public void initialize() {
+		initBoard();
 		GameManager.getInstance().startGame();
 
 	}
