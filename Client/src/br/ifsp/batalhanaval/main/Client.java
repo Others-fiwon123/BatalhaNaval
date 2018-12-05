@@ -1,6 +1,8 @@
 
 package br.ifsp.batalhanaval.main;
 
+import java.io.IOException;
+
 import br.ifsp.batalhanaval.manager.ScreenManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,16 +18,21 @@ public class Client extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
+		
+		ScreenManager.getInstance().setStage(primaryStage);
+		ScreenManager.getInstance().showScreen();
+		
+		/*Parent root = null;
+		
 		try {
-
-			// Inicia Tela inicial
-			Parent root = FXMLLoader.load(getClass().getResource(ScreenManager.INITSCREEN));
-			Scene scene = new Scene(root);
-			primaryStage.setScene(scene);
-			primaryStage.show();
-
-		} catch (Exception e) {
-			e.printStackTrace();
+			root = FXMLLoader.load(getClass().getResource(ScreenManager.INITSCREEN));
+		} catch (IOException e1) {
+			System.out.println("Exceção não possível carregar a tela inicial.");
 		}
+		
+		Scene scene = new Scene(root);
+		primaryStage.setScene(scene);
+		primaryStage.show();
+		*/
 	}
 }

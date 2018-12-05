@@ -19,24 +19,27 @@ public class ServerConfiguration {
 	TextField tfIp, tfPort;
 
 	public void saveConfiguration(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader();
+		
+		ScreenManager.getInstance().setScreen(ScreenManager.INITSCREEN);
+		ScreenManager.getInstance().showScreen();
+		/*FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource(ScreenManager.INITSCREEN));
-		Parent parent;
+		Parent parent = null;
+
 		try {
 			parent = loader.load();
-			Scene scene = new Scene(parent);
-			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-			stage.setScene(scene);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Exceção não possível carregar a tela inicial.");
 		}
-
+		
+		Scene scene = new Scene(parent);
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		stage.setScene(scene);
+		 */
 	}
 
 	@FXML
 	public void initialize() {
-		System.out.println("OI");
 		tfIp.setText(ServerManager.getInstance().getIp());
 		tfPort.setText(String.valueOf(ServerManager.getInstance().getPort()));
 	}

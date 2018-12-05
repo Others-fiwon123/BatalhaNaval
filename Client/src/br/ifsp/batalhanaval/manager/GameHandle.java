@@ -12,10 +12,8 @@ import javafx.stage.Stage;
 public class GameHandle implements Runnable {
 
 	BufferedReader hearEnemy;
-	Stage stage;
-
-	public GameHandle(Stage stage, Socket socket) {
-		this.stage = stage;
+	
+	public GameHandle(Socket socket) {
 
 		InputStreamReader isReader;
 		try {

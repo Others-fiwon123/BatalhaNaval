@@ -17,20 +17,19 @@ public class InitScreen {
 	public void startMenu(ActionEvent event) {
 
 		// Inicia tela de menu Menu
-		Parent parent;
-
+		Parent parent = null;
+		
 		try {
-
 			parent = FXMLLoader.load(getClass().getResource(ScreenManager.MENU));
-			Scene scene = new Scene(parent);
-			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-			stage.setScene(scene);
-			stage.show();
-
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Exceção não possível carregar a tela Menu.");
 		}
+		
+		Scene scene = new Scene(parent);
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		stage.setScene(scene);
+		stage.show();
+
 	}
 
 	@FXML
@@ -38,16 +37,17 @@ public class InitScreen {
 
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource(ScreenManager.SERVERCONFIGURATION));
-		Parent parent;
+		Parent parent = null;
+		
 		try {
 			parent = loader.load();
-			Scene scene = new Scene(parent);
-			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-			stage.setScene(scene);
-
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Exceção não possível carregar a tela Configuração do Servidor.");
 		}
+		
+		Scene scene = new Scene(parent);
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		stage.setScene(scene);
+	
 	}
 }
