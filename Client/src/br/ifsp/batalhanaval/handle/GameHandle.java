@@ -1,14 +1,13 @@
-package br.ifsp.batalhanaval.manager;
+package br.ifsp.batalhanaval.handle;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.SocketException;
-
 import br.ifsp.batalhanaval.gameobjects.Player;
 import br.ifsp.batalhanaval.gameobjects.Ship;
-import javafx.stage.Stage;
+import br.ifsp.batalhanaval.manager.GameManager;
 
 public class GameHandle implements Runnable {
 

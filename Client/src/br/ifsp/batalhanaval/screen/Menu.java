@@ -3,16 +3,11 @@ package br.ifsp.batalhanaval.screen;
 import java.io.IOException;
 import java.net.Socket;
 
-import br.ifsp.batalhanaval.manager.GameHandle;
+import br.ifsp.batalhanaval.handle.GameHandle;
 import br.ifsp.batalhanaval.manager.GameManager;
 import br.ifsp.batalhanaval.manager.ScreenManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 public class Menu {
 

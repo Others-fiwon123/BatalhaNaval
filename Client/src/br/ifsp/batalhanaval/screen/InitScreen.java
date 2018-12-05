@@ -1,15 +1,8 @@
 package br.ifsp.batalhanaval.screen;
 
-import java.io.IOException;
-
 import br.ifsp.batalhanaval.manager.ScreenManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 public class InitScreen {
 
