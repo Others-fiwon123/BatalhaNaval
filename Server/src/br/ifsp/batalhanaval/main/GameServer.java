@@ -10,6 +10,7 @@ public class GameServer {
 
 	public static void main(String[] args) throws IOException {
 		try {
+			System.out.println("Inicializando o Servidor");
 			servidor = new GameServer();
 			servidor.startGameServer();
 		} catch (IOException e) {
