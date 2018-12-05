@@ -104,7 +104,7 @@ public class GameManager {
 		try {
 			new PrintWriter(socket.getOutputStream(), true).println("Hit:" + i + ":" + j);
 		} catch (IOException e) {
-			System.out.println("Exception Server Indisponível");
+			System.out.println("Exception Server Indisponï¿½vel");
 		}
 	}
 
@@ -116,7 +116,7 @@ public class GameManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void readyGame() {
 		Ship[] ships = player.getShips();
 		String message = "Ready";
@@ -128,7 +128,7 @@ public class GameManager {
 		try {
 			new PrintWriter(socket.getOutputStream(), true).println(message);
 		} catch (IOException e) {
-			System.out.println("Exception Server Indisponível");
+			System.out.println("Exception Server Indisponï¿½vel");
 		}
 		isReadyPlayer = true;
 		game.playerReady();
@@ -147,16 +147,16 @@ public class GameManager {
 		switch (newState) {
 		case ENDGAME:
 			Platform.runLater(new Runnable() {
-			                @Override
-			                public void run() {
-			                    Alert alertLose = new Alert(AlertType.INFORMATION);
-			                    alertLose.setTitle("Information Dialog");
-			                    alertLose.setHeaderText(null);
-			                    alertLose.setContentText("Enemy Disconect!");
+				@Override
+				public void run() {
+					Alert alertLose = new Alert(AlertType.INFORMATION);
+					alertLose.setTitle("Information Dialog");
+					alertLose.setHeaderText(null);
+					alertLose.setContentText("Enemy Disconect!");
 
-			                    alertLose.showAndWait();
-			                }
-			            });
+					alertLose.showAndWait();
+				}
+			});
 			break;
 		case START:
 			player = new Player(10, 10);
