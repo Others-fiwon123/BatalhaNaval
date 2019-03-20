@@ -9,10 +9,10 @@ import javafx.stage.Stage;
 
 public class ScreenManager {
 
-	public static final String INITSCREEN = "../screen/InitScreen.fxml";
-	public static final String MENU = "../screen/Menu.fxml";
-	public static final String GAMEBOARD = "../screen/GameBoard.fxml";
-	public static final String SERVERCONFIGURATION = "../screen/ServerConfiguration.fxml";
+	public static final String INITSCREEN = "br/ifsp/batalhanaval/screen/InitScreen.fxml";
+	public static final String MENU = "br/ifsp/batalhanaval/screen/Menu.fxml";
+	public static final String GAMEBOARD = "br/ifsp/batalhanaval/screen/GameBoard.fxml";
+	public static final String SERVERCONFIGURATION = "br/ifsp/batalhanaval/screen/ServerConfiguration.fxml";
 	
 	static ScreenManager instance;
 	
@@ -60,7 +60,7 @@ public class ScreenManager {
 	
 	public void showScreen() {
 		loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource(currentScreen));
+		loader.setLocation(getClass().getClassLoader().getResource(currentScreen));
 		
 		try {
 			parent = loader.load();

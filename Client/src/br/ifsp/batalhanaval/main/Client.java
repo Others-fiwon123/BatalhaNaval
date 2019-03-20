@@ -1,4 +1,3 @@
-
 package br.ifsp.batalhanaval.main;
 
 import br.ifsp.batalhanaval.manager.ScreenManager;

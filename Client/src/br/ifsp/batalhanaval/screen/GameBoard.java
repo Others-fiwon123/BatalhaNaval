@@ -158,8 +158,8 @@ public class GameBoard {
 			if (GameManager.getInstance().getState() == GameManager.STATES.YOURTURN
 					&& GameManager.getInstance().isGameReady()) {
 				if (!tileEnemy.getOpen()) {
-					int i = gridPlayer.getRowIndex(tileEnemy);
-					int j = gridPlayer.getColumnIndex(tileEnemy);
+					int i = GridPane.getRowIndex(tileEnemy);
+					int j = GridPane.getColumnIndex(tileEnemy);
 					GameManager.getInstance().passTurn(i, j);
 
 					if (tileEnemy.getPart() != null) {
@@ -206,8 +206,8 @@ public class GameBoard {
 			Tile tilePlayer = (Tile) event.getTarget();
 
 			if (hold != null) {
-				int i = gridPlayer.getRowIndex(tilePlayer);
-				int j = gridPlayer.getColumnIndex(tilePlayer);
+				int i = GridPane.getRowIndex(tilePlayer);
+				int j = GridPane.getColumnIndex(tilePlayer);
 
 				if (canPutShip(gridPlayer, i, j)) {
 					hold.setVisible(false);
